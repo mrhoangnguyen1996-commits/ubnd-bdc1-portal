@@ -18,21 +18,21 @@ function writeLog(username, action) {
     writeDB(db);
 }
 
-// 🔐 API Auth
+// 🔐 API Đăng Nhập Hệ Thống
 app.post('/api/auth/login', (req, res) => {
     const { username, password } = req.body;
     const db = readDB();
     const user = db.users.find(u => u.username === username && u.password === password);
     if (user) return res.json({ success: true, user });
-    return res.status(401).json({ success: false, message: "Sai tài khoản hoặc mật khẩu!" });
+    return res.status(401).json({ success: false, message: "Sai thông tin chứng thư bộ ngành!" });
 });
 
-// 👑 API Super Admin: Tạo User (Phân quyền rõ ràng: lanhdao hoặc canbo)
+// 👑 API Quản Trị Tối Cao: Cấp Tài Khoản
 app.post('/api/superadmin/users', (req, res) => {
     const { adminUser, username, password, name, department, role } = req.body;
     const db = readDB();
     if (!db.users.some(u => u.username === adminUser && u.role === 'superadmin')) return res.status(403).json({ success: false });
-    if (db.users.some(u => u.username === username)) return res.json({ success: false, message: "Tài khoản đã tồn tại!" });
+    if (db.users.some(u => u.username === username)) return res.json({ success: false, message: "Tài khoản cán bộ đã tồn tại!" });
 
     db.users.push({ username, password, role, name, department });
     writeDB(db);
@@ -47,17 +47,18 @@ app.get('/api/superadmin/monitoring', (req, res) => {
     res.json({ users: db.users, logs: db.logs });
 });
 
-// 📰 API Tin Tức (Xử lý chữ chạy + Xóa bài đăng theo cấp bậc)
+// 📰 API Bảng Tin Quốc Gia BDC
 app.get('/api/news', (req, res) => res.json(readDB().news || []));
+
 app.post('/api/admin/news', (req, res) => {
     const { username, tag, title, content, important } = req.body;
     const db = readDB();
     const user = db.users.find(u => u.username === username);
     if (!user || (user.role !== 'superadmin' && user.role !== 'lanhdao')) return res.status(403).json({ success: false });
 
-    db.news.unshift({ id: 'NEWS-' + Date.now(), tag, title, content, important: !!important, time: new Date().toLocaleString('vi-VN') });
+    db.news.unshift({ id: 'NEWS-' + Math.floor(1000 + Math.random() * 9000), tag, title, content, important: !!important, time: new Date().toLocaleString('vi-VN') });
     writeDB(db);
-    writeLog(username, `Đã phát hành bản tin${important ? ' QUAN TRỌNG' : ''}: ${title}`);
+    writeLog(username, `Đã ban hành văn kiện: ${title}`);
     res.json({ success: true });
 });
 
@@ -66,16 +67,17 @@ app.post('/api/admin/news/delete', (req, res) => {
     const db = readDB();
     const user = db.users.find(u => u.username === username);
     if (!user || (user.role !== 'superadmin' && user.role !== 'lanhdao')) {
-        return res.status(403).json({ success: false, message: "Bạn không có quyền xóa bài đăng!" });
+        return res.status(403).json({ success: false, message: "Bạn không có quyền hạn gỡ bỏ văn bản!" });
     }
     db.news = db.news.filter(n => n.id !== newsId);
     writeDB(db);
-    writeLog(username, `Đã xóa bài đăng thông báo mã số: ${newsId}`);
+    writeLog(username, `Đã gỡ bỏ bản tin mang mã số: ${newsId}`);
     res.json({ success: true });
 });
 
-// 🚨 API Roleplay: Cảnh báo an ninh & Truy nã
+// 🚨 API Quản Lý Trạng Thái & Truy Nã
 app.get('/api/system/config', (req, res) => res.json(readDB().system_config || { "security_level": "BÌNH THƯỜNG" }));
+
 app.post('/api/admin/system/alert', (req, res) => {
     const { username, level } = req.body;
     const db = readDB();
@@ -84,7 +86,7 @@ app.post('/api/admin/system/alert', (req, res) => {
     
     db.system_config = { security_level: level };
     writeDB(db);
-    writeLog(username, `THAY ĐỔI TRẠNG THÁI AN NINH THÀNH PHỐ THÀNH: ${level}`);
+    writeLog(username, `ĐÃ CHUYỂN TRẠNG THÁI AN NINH TOÀN DIỆN THÀNH: ${level}`);
     res.json({ success: true });
 });
 
@@ -94,19 +96,60 @@ app.post('/api/admin/warrants', (req, res) => {
     const db = readDB();
     db.warrants.unshift({ id: 'W-' + Math.floor(100 + Math.random() * 900), name, crime, bounty, time: new Date().toLocaleDateString('vi-VN') });
     writeDB(db);
-    writeLog(username, `Đã phát lệnh TRUY NÃ đối tượng: ${name}`);
+    writeLog(username, `Đã ban lệnh tầm nã đối tượng: ${name}`);
     res.json({ success: true });
 });
+
 app.post('/api/admin/warrants/delete', (req, res) => {
     const { username, id } = req.body;
     const db = readDB();
     db.warrants = db.warrants.filter(w => w.id !== id);
     writeDB(db);
-    writeLog(username, `Đã gỡ lệnh truy nã mã số: ${id}`);
+    writeLog(username, `Đã xóa lệnh tầm nã đối với mã số: ${id}`);
     res.json({ success: true });
 });
 
-// 📊 API Thống kê & Công dân cũ giữ nguyên
+// 📥 API Hồ Sơ Đơn Thư & Phản Hồi Dân Sự
+app.get('/api/hoso', (req, res) => res.json(readDB().hoso));
+
+app.post('/api/hoso', (req, res) => {
+    const { name, type, content } = req.body;
+    const db = readDB();
+    const newDoc = { id: 'HS-' + Math.floor(1000 + Math.random() * 9000), name, type, content, status: "Chờ duyệt", time: new Date().toLocaleString('vi-VN'), feedbacks: [] };
+    db.hoso.unshift(newDoc);
+    writeDB(db);
+    res.json({ success: true, data: newDoc });
+});
+
+app.post('/api/admin/hoso/approve', (req, res) => {
+    const { username, id, status } = req.body;
+    const db = readDB();
+    const doc = db.hoso.find(h => h.id === id);
+    if (doc) { 
+        doc.status = status; 
+        writeDB(db); 
+        writeLog(username, `Đã ký duyệt trạng thái đơn [${id}] thành: ${status}`); 
+        return res.json({ success: true }); 
+    }
+    res.status(404).json({ success: false });
+});
+
+app.post('/api/hoso/feedback', (req, res) => {
+    const { id, username, sender, text } = req.body;
+    const db = readDB();
+    const doc = db.hoso.find(h => h.id === id);
+    if (!doc) return res.status(404).json({ success: false });
+    let finalSender = sender;
+    if (username) { 
+        const user = db.users.find(u => u.username === username); 
+        if (user) finalSender = `🏛️ ${user.name} (${user.department})`; 
+    }
+    doc.feedbacks.push({ sender: finalSender, text, time: new Date().toLocaleTimeString('vi-VN') });
+    writeDB(db);
+    res.json({ success: true });
+});
+
+// 📊 API Thống Kê Chung Ban Ngành
 app.get('/api/admin/stats', (req, res) => {
     const db = readDB();
     const citizens = Object.values(db.citizens);
@@ -120,45 +163,21 @@ app.get('/api/admin/stats', (req, res) => {
         chartData: { lawStatus: [hop_phap, naxin], docsStatus: [db.hoso.filter(h => h.status === "Chờ duyệt").length, db.hoso.filter(h => h.status === "Đã Phê Duyệt").length] }
     });
 });
+
 app.get('/api/citizens', (req, res) => {
     const db = readDB();
     const { search } = req.query;
     if (search) return res.json(db.citizens[search] ? { [search]: db.citizens[search] } : {});
     res.json(db.citizens);
 });
+
 app.post('/api/admin/citizens', (req, res) => {
     const { username, name, cccd, chucvu, trangthai, police_record, military_status, bank_account, bank_balance } = req.body;
     const db = readDB();
     db.citizens[name] = { cccd, chucvu, trangthai, police_record, military_status, bank_account, bank_balance: Number(bank_balance) };
     writeDB(db);
-    writeLog(username, `Đã cập nhật hồ sơ định danh gốc của: ${name}`);
-    res.json({ success: true });
-});
-app.get('/api/hoso', (req, res) => res.json(readDB().hoso));
-app.post('/api/hoso', (req, res) => {
-    const { name, type, content } = req.body;
-    const db = readDB();
-    const newDoc = { id: 'HS-' + Math.floor(1000 + Math.random() * 9000), name, type, content, status: "Chờ duyệt", time: new Date().toLocaleString('vi-VN'), feedbacks: [] };
-    db.hoso.unshift(newDoc); writeDB(db);
-    res.json({ success: true, data: newDoc });
-});
-app.post('/api/admin/hoso/approve', (req, res) => {
-    const { username, id, status } = req.body;
-    const db = readDB();
-    const doc = db.hoso.find(h => h.id === id);
-    if (doc) { doc.status = status; writeDB(db); writeLog(username, `Thẩm định hồ sơ ${id} thành: ${status}`); return res.json({ success: true }); }
-    res.status(404).json({ success: false });
-});
-app.post('/api/hoso/feedback', (req, res) => {
-    const { id, username, sender, text } = req.body;
-    const db = readDB();
-    const doc = db.hoso.find(h => h.id === id);
-    if (!doc) return res.status(404).json({ success: false });
-    let finalSender = sender;
-    if (username) { const user = db.users.find(u => u.username === username); if (user) finalSender = `🏛️ ${user.name} (${user.department})`; }
-    doc.feedbacks.push({ sender: finalSender, text, time: new Date().toLocaleTimeString('vi-VN') });
-    writeDB(db); if (username) writeLog(username, `Gửi tin nhắn phản hồi đơn hồ sơ ${id}`);
+    writeLog(username, `Đã chỉnh sửa hồ sơ dữ liệu căn cước của cư dân: ${name}`);
     res.json({ success: true });
 });
 
-app.listen(PORT, () => console.log(`🏛️ SERVER RUNNING ON PORT ${PORT}`));
+app.listen(PORT, () => console.log(`🏛️ CỔNG THÔNG TIN BDC CHẠY TẠI PORT ${PORT}`));
