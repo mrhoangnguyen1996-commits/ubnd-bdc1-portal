@@ -1,11 +1,33 @@
 {
+  "users": [
+    {
+      "username": "chu_tich",
+      "password": "admin123",
+      "role": "superadmin",
+      "name": "Bùi Đình Cường",
+      "department": "Ban Lãnh Đạo tối cao"
+    }
+  ],
   "citizens": {
-    "Bui_Dinh_Cuong": {
-      "cccd": "BDC-000001",
-      "chucvu": "Chủ tịch Phường",
-      "tienan": "Không có",
-      "trangthai": "Hợp pháp"
+    "Nguyen_Manh_Hoang": {
+      "cccd": "BDC-2026-001",
+      "chucvu": "Giám sát Mua hàng",
+      "trangthai": "Hợp pháp",
+      "police_record": "Lý lịch sạch, chấp hành tốt pháp luật",
+      "military_status": "Đủ điều kiện nhập ngũ (Đã đăng ký)",
+      "bank_account": "VTB-102938",
+      "bank_balance": 150000000
     }
   },
-  "hoso": []
+  "hoso": [],
+  "news": [
+    {
+      "id": "NEWS-1",
+      "tag": "QUYẾT ĐỊNH",
+      "title": "Áp dụng hệ thống phân quyền cán bộ toàn diện năm 2026",
+      "content": "Yêu cầu các trưởng bộ phận liên hệ Chủ Tịch để nhận tài khoản cán bộ riêng biệt. Nghiêm cấm dùng chung tài khoản.",
+      "time": "13/06/2026, 21:00:00"
+    }
+  ],
+  "logs": []
 }
