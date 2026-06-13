@@ -7,96 +7,95 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS Đóng dấu mộc mô phỏng văn bản hành chính thực tế */
-        .stamp-box {
-            position: relative;
-            overflow: hidden;
+        /* Ép buộc trình duyệt hiển thị nền sáng thuần túy, xóa hoàn toàn bóng tối darkmode */
+        html, body {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
         }
         .digital-stamp {
             border: 3px double;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 11px;
             font-weight: 900;
-            padding: 5px 10px;
+            padding: 4px 8px;
             text-transform: uppercase;
             display: inline-block;
-            letter-spacing: 1px;
             font-family: 'Courier New', Courier, monospace;
         }
         .stamp-status-pending { color: #d97706; border-color: #d97706; background: rgba(217,119,6,0.05); }
-        .stamp-status-approved { color: #16a34a; border-color: #16a34a; background: rgba(22,163,74,0.05); transform: rotate(-3deg); }
-        .stamp-status-rejected { color: #dc2626; border-color: #dc2626; background: rgba(220,38,38,0.05); transform: rotate(3deg); }
+        .stamp-status-approved { color: #16a34a; border-color: #16a34a; background: rgba(22,163,74,0.05); transform: rotate(-2deg); }
+        .stamp-status-rejected { color: #dc2626; border-color: #dc2626; background: rgba(220,38,38,0.05); transform: rotate(2deg); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-900 antialiased">
 
-    <header class="bg-white border-b-2 border-blue-800 shadow-xs sticky top-0 z-50">
+    <header class="bg-white border-b-4 border-blue-900 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14 bg-blue-800 text-white rounded-full flex items-center justify-center font-black text-xl shadow-md border-2 border-amber-400 shrink-0 tracking-wider">
+                <div class="w-14 h-14 bg-blue-900 text-white rounded-full flex items-center justify-center font-black text-xl shadow-md border-2 border-amber-400 tracking-wider">
                     BDC
                 </div>
                 <div>
-                    <h1 class="text-xl font-extrabold text-blue-900 tracking-wide">🏛️ CỔNG THÔNG TIN ĐIỆN TỬ CHÍNH PHỦ BDC</h1>
-                    <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mt-0.5">Hệ Thống Dịch Vụ Công & Phê Duyệt Hồ Sơ Liên Thông</p>
+                    <h1 class="text-xl font-black text-blue-950 tracking-wide">🏛️ CỔNG THÔNG TIN ĐIỆN TỬ CÔNG QUYỀN BDC</h1>
+                    <p class="text-xs text-blue-800 font-bold uppercase tracking-wider mt-0.5">Cổng dịch vụ hành chính công liên ban ngành</p>
                 </div>
             </div>
             
             <div class="flex items-center gap-4">
-                <div class="bg-gray-100 border border-gray-200 px-4 py-2 rounded-xl text-center shadow-inner font-mono">
-                    <span class="text-[10px] text-gray-400 block font-bold uppercase tracking-widest">Thời Gian Quốc Gia</span>
-                    <span id="liveClock" class="text-sm font-black text-blue-800">--:--:--</span>
+                <div class="bg-slate-100 border border-slate-200 px-4 py-1.5 rounded-lg text-center font-mono">
+                    <span class="text-[10px] text-slate-500 block font-bold uppercase tracking-widest">Thời Gian Thực Tế</span>
+                    <span id="liveClock" class="text-sm font-black text-blue-900">--:--:--</span>
                 </div>
                 <div id="userInfoDisplay" class="text-right text-xs hidden">
-                    <p class="font-bold text-gray-700" id="userDisplayName">Cán Bộ: --</p>
+                    <p class="font-black text-slate-800" id="userDisplayName">Cán Bộ: --</p>
                     <button onclick="logout()" class="text-red-600 hover:underline font-bold cursor-pointer">Đăng xuất ⤤</button>
                 </div>
-                <button id="btnLoginModal" onclick="openModal('loginModal')" class="bg-blue-800 text-white text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-blue-700 shadow-xs transition">
-                    <i class="fa-solid fa-user-shield mr-1"></i> Xác Minh Bộ Ngành
+                <button id="btnLoginModal" onclick="openModal('loginModal')" class="bg-blue-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg hover:bg-blue-800 shadow-sm transition">
+                    <i class="fa-solid fa-user-shield mr-1"></i> Xác Minh Cán Bộ
                 </button>
             </div>
         </div>
+
+        <div class="bg-amber-400 border-t border-b border-amber-500 text-slate-950 text-xs font-bold flex items-center">
+            <span class="bg-red-600 text-white px-3 py-1.5 uppercase shrink-0 tracking-wider flex items-center gap-1">
+                <i class="fa-solid fa-bullhorn animate-bounce"></i> TIN KHẨN
+            </span>
+            <marquee class="py-1" behavior="scroll" direction="left" scrollamount="6">
+                ⚠️ Thông báo: Yêu cầu các đơn vị công tác trực thuộc Cổng thông tin điện tử BDC nghiêm túc rà soát danh sách cấp tài khoản, tăng cường giám sát tiến trình ký duyệt hồ sơ người dân, tuyệt đối không để xảy ra tình trạng tồn đọng đơn thư cư trú pháp lý...
+            </marquee>
+        </div>
     </header>
 
-    <div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
         
         <aside class="space-y-6">
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
-                <h3 class="text-xs font-bold text-blue-900 uppercase border-b border-gray-100 pb-2 mb-3 tracking-wider">
-                    <i class="fa-solid fa-folder-tree mr-1"></i> Khối Đơn Vị Công Tác
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+                <h3 class="text-xs font-black text-blue-950 uppercase border-b border-slate-100 pb-2 mb-3 tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-building-shield"></i> Khối Đơn Vị Công Tác
                 </h3>
-                <div class="space-y-1.5 text-xs font-bold text-gray-600">
-                    <button onclick="filterHoso('ALL')" id="btn-ALL" class="w-full text-left px-3 py-2.5 rounded-lg bg-blue-50 text-blue-800 flex justify-between items-center border border-blue-100">
-                        <span>📂 Tất cả hồ sơ dân sự</span>
+                <div class="space-y-1 text-xs font-bold text-slate-700">
+                    <button onclick="filterHoso('ALL')" id="btn-ALL" class="w-full text-left px-3 py-2.5 rounded-lg bg-blue-900 text-white flex justify-between items-center">
+                        <span>📂 Tất cả ban ngành</span>
                     </button>
-                    <button onclick="filterHoso('CƠ SÁT BDC')" id="btn-CA" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition">
-                        <span>🚓 Cảnh Sát Hành Chính BDC</span>
-                    </button>
-                    <button onclick="filterHoso('TÒA ÁN')" id="btn-TA" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition">
-                        <span>⚖️ Tòa Án Tối Cao Liên Ban</span>
-                    </button>
-                    <button onclick="filterHoso('KHO BẠC')" id="btn-KB" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition">
-                        <span>💰 Kho Bạc Quốc Gia BDC</span>
-                    </button>
-                    <button onclick="filterHoso('QUÂN SỰ')" id="btn-QS" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition">
-                        <span>🪖 Ban Chỉ Huy Quân Sự</span>
-                    </button>
+                    <button onclick="filterHoso('CƠ SÁT BDC')" id="btn-CA" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2 transition">🚓 Cảnh Sát Hành Chính BDC</button>
+                    <button onclick="filterHoso('TÒA ÁN')" id="btn-TA" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2 transition">⚖️ Tòa Án Tối Cao Liên Ban</button>
+                    <button onclick="filterHoso('KHO BẠC')" id="btn-KB" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2 transition">💰 Kho Bạc Quốc Gia BDC</button>
+                    <button onclick="filterHoso('QUÂN SỰ')" id="btn-QS" class="w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2 transition">🪖 Ban Chỉ Huy Quân Sự</button>
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-xs">
-                <h3 class="text-xs font-bold text-gray-700 uppercase border-b border-gray-100 pb-2 mb-3 tracking-wider">
-                    <i class="fa-solid fa-pen-to-square mr-1"></i> Nộp Đơn Thư Trực Tuyến
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+                <h3 class="text-xs font-black text-slate-700 uppercase border-b border-slate-100 pb-2 mb-3 tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-file-signature"></i> Nộp Đơn Thư Công Dân
                 </h3>
                 <form onsubmit="submitCitizenHoso(event)" class="space-y-3 text-xs">
                     <div>
-                        <label class="block text-gray-500 font-bold mb-1">Họ và Tên Nhân Vật (Họ_Tên):</label>
-                        <input type="text" id="citizenName" required class="w-full border border-gray-300 p-2 rounded-md focus:outline-blue-800 bg-gray-50" placeholder="Viết đúng định dạng...">
+                        <label class="block text-slate-500 font-bold mb-1">Tên Nhân Vật Người Dân:</label>
+                        <input type="text" id="citizenName" required class="w-full border border-slate-300 p-2 rounded-md bg-white text-slate-900 focus:outline-blue-900" placeholder="Họ_Tên...">
                     </div>
                     <div>
-                        <label class="block text-gray-500 font-bold mb-1">Loại Hình Hồ Sơ Cần Nộp:</label>
-                        <select id="hosoType" class="w-full border border-gray-300 p-2 rounded-md bg-white font-medium">
-                            <option value="CƠ SÁT BDC - Đăng ký Căn cước công dân gắn chíp">🚓 Đăng ký Thẻ Căn cước công dân gắn chíp</option>
+                        <label class="block text-slate-500 font-bold mb-1">Loại Hình Văn Bản:</label>
+                        <select id="hosoType" class="w-full border border-slate-300 p-2 rounded-md bg-white text-slate-900 font-bold">
                             <option value="CƠ SÁT BDC - Khai báo Tạm trú / Tạm vắng">🚓 Khai báo Tạm trú / Tạm vắng</option>
                             <option value="KHO BẠC - Đơn cấp phép Thành lập Doanh nghiệp">💰 Đơn cấp phép Thành lập Doanh nghiệp</option>
                             <option value="TÒA ÁN - Đơn khởi kiện / Khiếu nại hành chính">⚖️ Đơn khởi kiện / Khiếu nại hành chính</option>
@@ -104,66 +103,117 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-gray-500 font-bold mb-1">Nội Dung Thỉnh Nguyện Chi Tiết:</label>
-                        <textarea id="hosoContent" rows="3" required class="w-full border border-gray-300 p-2 rounded-md focus:outline-blue-800 bg-gray-50" placeholder="Ghi rõ lý do, yêu cầu..."></textarea>
+                        <label class="block text-slate-500 font-bold mb-1">Nội Dung Kiến Nghị:</label>
+                        <textarea id="hosoContent" rows="3" required class="w-full border border-slate-300 p-2 rounded-md bg-white text-slate-900 focus:outline-blue-900" placeholder="Trình bày chi tiết..."></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-amber-500 text-slate-950 font-black py-2 rounded-md hover:bg-amber-400 cursor-pointer shadow-xs transition">GỬI HỒ SƠ LÊN HỆ THỐNG</button>
+                    <button type="submit" class="w-full bg-blue-900 text-white font-bold py-2 rounded-md hover:bg-blue-800 transition cursor-pointer shadow-xs">GỬI LÊN HỆ THỐNG BDC</button>
                 </form>
             </div>
         </aside>
 
         <main class="lg:col-span-3 space-y-6">
             
-            <section class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs">
-                <div class="flex justify-between items-center border-b border-gray-100 pb-3 mb-4">
-                    <h2 class="text-sm font-black text-blue-900 uppercase tracking-wide">
-                        <i class="fa-solid fa-bullhorn text-amber-500 mr-1"></i> Bảng Tin Thông Báo Trung Tâm BDC
-                    </h2>
-                    <button onclick="openModal('newsModal')" id="btnCreateNews" class="hidden text-xs bg-emerald-600 text-white font-bold px-3 py-1 rounded hover:bg-emerald-500 transition">
-                        + Ban Hành Chỉ Thị
-                    </button>
+            <section id="supervisorPanel" class="bg-white p-5 rounded-xl border-2 border-blue-900 shadow-xs hidden">
+                <h2 class="text-sm font-black text-blue-950 uppercase border-b border-slate-100 pb-3 mb-4 tracking-wide flex items-center gap-1">
+                    <i class="fa-solid fa-chart-pie text-blue-900"></i> BAN GIÁM SÁT CÁN BỘ & THỐNG KÊ CẤP TÀI KHOẢN
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
+                        <p class="text-slate-400 font-bold uppercase">Tổng số tài khoản cán bộ</p>
+                        <p id="statTotalStaff" class="text-2xl font-black text-blue-900">0</p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
+                        <p class="text-slate-400 font-bold uppercase">Hệ thống phân quyền</p>
+                        <p class="text-sm font-black text-emerald-700 mt-2">🛡️ 1 Quản Lý | 🛡️ 1 Cán Bộ Trực Ban</p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
+                        <p class="text-slate-400 font-bold uppercase">Trạng thái cổng BDC</p>
+                        <p class="text-xs font-black text-green-600 mt-2"><i class="fa-solid fa-circle-check"></i> Toàn bộ cán bộ trực tuyến</p>
+                    </div>
                 </div>
-                
-                <div id="newsFeedContainer" class="space-y-4">
-                    <p class="text-xs text-gray-400 italic text-center py-4">Đang kết nối đồng bộ dòng dữ liệu bảng tin quốc gia...</p>
+                <div class="overflow-x-auto text-xs">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-blue-950 font-black">
+                                <th class="p-2 border border-slate-200">Tên Cán Bộ</th>
+                                <th class="p-2 border border-slate-200">Đơn Vị / Ban Ngành</th>
+                                <th class="p-2 border border-slate-200">Chức Vụ Hệ Thống</th>
+                                <th class="p-2 border border-slate-200 text-center">Hồ Sơ Đã Xử Lý</th>
+                                <th class="p-2 border border-slate-200 text-center">Trạng Thái An Ninh</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supervisorTableBody">
+                            </tbody>
+                    </table>
                 </div>
             </section>
 
-            <section class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs">
-                <h2 class="text-sm font-black text-gray-800 uppercase border-b border-gray-100 pb-3 mb-4 tracking-wide">
-                    <i class="fa-solid fa-passport text-blue-800 mr-1"></i> Tiến Trình Xét Duyệt Đơn Thư Công Dân
+            <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+                    <h2 class="text-sm font-black text-blue-950 uppercase tracking-wide flex items-center gap-1">
+                        <i class="fa-solid fa-bullhorn text-amber-500"></i> Bảng Tin Thông Báo Trung Tâm BDC
+                    </h2>
+                    <button onclick="openModal('newsModal')" id="btnCreateNews" class="hidden text-xs bg-blue-900 text-white font-bold px-3 py-1 rounded hover:bg-blue-800 transition">
+                        + Phát Hành Công Văn
+                    </button>
+                </div>
+                <div id="newsFeedContainer" class="space-y-4"></div>
+            </section>
+
+            <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+                <h2 class="text-sm font-black text-slate-800 uppercase border-b border-slate-100 pb-3 mb-4 tracking-wide flex items-center gap-1">
+                    <i class="fa-solid fa-folder-open text-blue-900"></i> Tiến Trình Xét Duyệt Đơn Thư Công Dân
                 </h2>
-                
-                <div id="hosoListContainer" class="space-y-4">
-                    </div>
+                <div id="hosoListContainer" class="space-y-4"></div>
+            </section>
+
+            <section class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+                <h2 class="text-sm font-black text-slate-800 uppercase border-b border-slate-100 pb-3 mb-4 tracking-wide flex items-center gap-1">
+                    <i class="fa-solid fa-clock-rotate-left text-slate-600"></i> LỊCH SỬ XỬ LÝ HỒ SƠ CỦA CÁN BỘ TIẾP NHẬN
+                </h2>
+                <div class="overflow-x-auto text-xs">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 font-bold">
+                                <th class="p-2 border-b border-slate-200">Cán Bộ Tiếp Nhận</th>
+                                <th class="p-2 border-b border-slate-200">Mã Hồ Sơ</th>
+                                <th class="p-2 border-b border-slate-200">Hành Động Đóng Mộc</th>
+                                <th class="p-2 border-b border-slate-200">Thời Gian Xử Lý</th>
+                                <th class="p-2 border-b border-slate-200">Ý Kiến Phê Duyệt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTableBody">
+                            </tbody>
+                    </table>
+                </div>
             </section>
         </main>
     </div>
 
-    <div id="loginModal" class="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded-xl max-w-sm w-full border border-gray-200 shadow-2xl space-y-4 text-xs">
-            <h3 class="text-sm font-black text-center text-blue-900 uppercase tracking-wider">Chứng Thư Điện Tử Bộ Ngành</h3>
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-xl max-w-sm w-full border border-slate-200 shadow-2xl space-y-4 text-xs">
+            <h3 class="text-sm font-black text-center text-blue-900 uppercase">Chứng Thư Điện Tử Bộ Ngành</h3>
             <div class="space-y-2">
-                <input type="text" id="usernameInput" placeholder="Tên tài khoản cán bộ..." class="w-full border border-gray-300 p-2.5 rounded-lg text-center font-bold">
-                <input type="password" id="passwordInput" placeholder="Mật mã bảo mật an ninh..." class="w-full border border-gray-300 p-2.5 rounded-lg text-center font-mono">
+                <input type="text" id="usernameInput" placeholder="Tài khoản cán bộ..." class="w-full border border-slate-300 p-2.5 rounded-lg text-center font-bold">
+                <input type="password" id="passwordInput" placeholder="Mật mã bảo mật an ninh..." class="w-full border border-slate-300 p-2.5 rounded-lg text-center font-mono">
             </div>
             <div class="flex gap-2">
-                <button onclick="closeModal('loginModal')" class="w-1/2 bg-gray-200 text-gray-700 py-2 rounded-lg font-bold">HỦY</button>
-                <button onclick="handleLogin()" class="w-1/2 bg-blue-800 text-white py-2 rounded-lg font-black uppercase">XÁC THỰC</button>
+                <button onclick="closeModal('loginModal')" class="w-1/2 bg-slate-100 text-slate-700 py-2 rounded-lg font-bold">HỦY</button>
+                <button onclick="handleLogin()" class="w-1/2 bg-blue-900 text-white py-2 rounded-lg font-black uppercase">XÁC THỰC</button>
             </div>
         </div>
     </div>
 
-    <div id="newsModal" class="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center hidden z-50">
-        <div class="bg-white p-6 rounded-xl max-w-md w-full border border-gray-200 shadow-2xl space-y-4 text-xs">
-            <h3 class="text-sm font-black text-blue-900 uppercase">Ban Hành Chỉ Thị Quốc Gia BDC</h3>
+    <div id="newsModal" class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-xl max-w-md w-full border border-slate-200 shadow-2xl space-y-4 text-xs">
+            <h3 class="text-sm font-black text-blue-950 uppercase">Ban Hành Công Văn Chỉ Thị</h3>
             <div class="space-y-3">
-                <input type="text" id="newsTitleInput" placeholder="Tiêu đề thông báo chính thức..." class="w-full border border-gray-300 p-2 rounded">
-                <textarea id="newsContentInput" rows="4" placeholder="Nội dung chi tiết của sắc lệnh hoặc thông báo công cộng..." class="w-full border border-gray-300 p-2 rounded"></textarea>
+                <input type="text" id="newsTitleInput" placeholder="Tiêu đề thông báo..." class="w-full border border-slate-300 p-2 rounded">
+                <textarea id="newsContentInput" rows="4" placeholder="Nội dung chi tiết..." class="w-full border border-slate-300 p-2 rounded"></textarea>
             </div>
             <div class="flex gap-2 justify-end">
-                <button onclick="closeModal('newsModal')" class="bg-gray-200 px-4 py-2 rounded font-bold">ĐÓNG</button>
-                <button onclick="submitNews()" class="bg-emerald-600 text-white px-4 py-2 rounded font-black uppercase">PHÁT HÀNH</button>
+                <button onclick="closeModal('newsModal')" class="bg-slate-100 px-4 py-2 rounded font-bold">ĐÓNG</button>
+                <button onclick="submitNews()" class="bg-blue-900 text-white px-4 py-2 rounded font-black">PHÁT HÀNH</button>
             </div>
         </div>
     </div>
@@ -173,7 +223,6 @@
         let allHoso = [];
         let currentFilter = 'ALL';
 
-        // ⏱️ 1. Khởi động đồng hồ thời gian thực tế chính xác từng giây
         function initClock() {
             setInterval(() => {
                 const now = new Date();
@@ -184,110 +233,94 @@
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-        // 🔐 2. Xử lý đăng nhập cán bộ hành chính công BDC
         async function handleLogin() {
             const username = document.getElementById('usernameInput').value.trim();
             const password = document.getElementById('passwordInput').value.trim();
-            
-            try {
-                const res = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ username, password })
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    currentUser = data.user;
-                    closeModal('loginModal');
-                    updateUIPermissions();
-                    loadNews();
-                    loadHoso();
-                } else {
-                    alert("Sai mã chứng thư cán bộ!");
-                }
-            } catch (e) { console.error("Lỗi xác thực:", e); }
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username, password })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                currentUser = data.user;
+                closeModal('loginModal');
+                updateUIPermissions();
+                refreshAllData();
+            } else { alert("Mật mã chứng thư sai!"); }
         }
 
         function logout() {
             currentUser = null;
             updateUIPermissions();
-            loadNews();
-            loadHoso();
+            refreshAllData();
         }
 
-        // 🛡️ 3. Kiểm duyệt phân quyền giao diện hiển thị linh hoạt
         function updateUIPermissions() {
             const btnLogin = document.getElementById('btnLoginModal');
             const userDisplay = document.getElementById('userInfoDisplay');
             const btnCreateNews = document.getElementById('btnCreateNews');
+            const supervisorPanel = document.getElementById('supervisorPanel');
 
             if (currentUser) {
                 btnLogin.classList.add('hidden');
                 userDisplay.classList.remove('hidden');
                 document.getElementById('userDisplayName').innerText = `${currentUser.name} [${currentUser.role === 'manager' ? 'QUẢN LÝ' : 'CÁN BỘ'}]`;
                 btnCreateNews.classList.remove('hidden');
+                
+                // HIỂN THỊ BAN GIÁM SÁT KHI LÀ TÀI KHOẢN QUẢN LÝ
+                if(currentUser.role === 'manager') {
+                    supervisorPanel.classList.remove('hidden');
+                } else {
+                    supervisorPanel.classList.add('hidden');
+                }
             } else {
                 btnLogin.classList.remove('hidden');
                 userDisplay.classList.add('hidden');
                 btnCreateNews.classList.add('hidden');
+                supervisorPanel.classList.add('hidden');
             }
         }
 
-        // 📢 4. Tải dòng dữ liệu bảng tin trung tâm công cộng (Fix lỗi hiển thị)
         async function loadNews() {
-            try {
-                const res = await fetch('/api/news');
-                const news = await res.json();
-                const container = document.getElementById('newsFeedContainer');
-                
-                if (news.length === 0) {
-                    container.innerHTML = `<p class="text-xs text-gray-400 italic text-center py-4">Chưa có văn bản chỉ thị công cộng.</p>`;
-                    return;
-                }
-
-                container.innerHTML = news.map(n => {
-                    // Kiểm tra nếu là cấp Quản lý mới cho hiển thị phím Xóa bản tin
-                    const showDeleteBtn = currentUser && currentUser.role === 'manager';
-                    return `
-                        <div class="p-4 rounded-lg bg-gray-50 border border-gray-200 relative group transition hover:shadow-xs">
-                            <div class="flex justify-between items-start">
-                                <h4 class="font-extrabold text-blue-900 text-sm">${n.title}</h4>
-                                ${showDeleteBtn ? `<button onclick="deleteNews('${n.id}')" class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-sm font-black hover:bg-red-600 hover:text-white transition cursor-pointer">❌ XÓA TIN</button>` : ''}
-                            </div>
-                            <p class="text-xs text-gray-600 mt-2 whitespace-pre-wrap leading-relaxed">${n.content}</p>
-                            <div class="flex justify-between items-center text-[10px] text-gray-400 mt-3 font-bold">
-                                <span>✍️ Cơ quan ban hành: ${n.author}</span>
-                                <span>⏱️ Thời gian công bố: ${n.time}</span>
-                            </div>
+            const res = await fetch('/api/news');
+            const news = await res.json();
+            const container = document.getElementById('newsFeedContainer');
+            if (news.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-2">Không có thông báo mới.</p>`;
+                return;
+            }
+            container.innerHTML = news.map(n => {
+                const showDeleteBtn = currentUser && currentUser.role === 'manager';
+                return `
+                    <div class="p-4 rounded-lg bg-slate-50 border border-slate-200 relative transition hover:shadow-xs">
+                        <div class="flex justify-between items-start">
+                            <h4 class="font-bold text-blue-950 text-xs">${n.title}</h4>
+                            ${showDeleteBtn ? `<button onclick="deleteNews('${n.id}')" class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-black hover:bg-red-600 hover:text-white transition cursor-pointer">❌ XÓA TIN</button>` : ''}
                         </div>
-                    `;
-                }).join('');
-            } catch (e) { console.error("Lỗi tải bảng tin:", e); }
+                        <p class="text-xs text-slate-600 mt-1 whitespace-pre-wrap">${n.content}</p>
+                        <div class="flex justify-between items-center text-[10px] text-slate-400 mt-2 font-bold">
+                            <span>✍️ Ban ban hành: ${n.author}</span>
+                            <span>⏱️ Lịch đăng: ${n.time}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        // ❌ 5. Hàm xóa văn bản bảng tin (Chỉ quản lý thực thi thành công)
         async function deleteNews(newsId) {
-            if (!confirm("Xác nhận gỡ bỏ văn bản chỉ thị này khỏi trang thông tin chính thống?")) return;
-            try {
-                const res = await fetch('/api/news/delete', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ newsId, role: currentUser ? currentUser.role : 'guest' })
-                });
-                if (res.ok) {
-                    loadNews();
-                } else {
-                    const data = await res.json();
-                    alert(data.message || "Bạn không đủ thẩm quyền tối cao!");
-                }
-            } catch (e) { console.error("Lỗi xóa tin:", e); }
+            if (!confirm("Xác nhận gỡ thông báo?")) return;
+            await fetch('/api/news/delete', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ newsId, role: currentUser.role })
+            });
+            loadNews();
         }
 
         async function submitNews() {
             const title = document.getElementById('newsTitleInput').value.trim();
             const content = document.getElementById('newsContentInput').value.trim();
-            if(!title || !content) return alert("Vui lòng điền đủ thông tin!");
-
             await fetch('/api/news/add', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -299,36 +332,29 @@
             loadNews();
         }
 
-        // 📥 6. Người dân khởi tạo gửi hồ sơ trực tuyến mới
         async function submitCitizenHoso(event) {
             event.preventDefault();
             const citizen_name = document.getElementById('citizenName').value.trim();
             const type = document.getElementById('hosoType').value;
             const content = document.getElementById('hosoContent').value.trim();
-
-            const res = await fetch('/api/hoso/submit', {
+            await fetch('/api/hoso/submit', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ citizen_name, type, content })
             });
-            if(res.ok) {
-                alert("Hồ sơ đã được mã hóa gửi lên Cổng thông tin BDC thành công!");
-                document.getElementById('citizenName').value = "";
-                document.getElementById('hosoContent').value = "";
-                loadHoso();
-            }
+            alert("Đã nộp đơn thư thành công lên cổng điện tử BDC!");
+            document.getElementById('citizenName').value = "";
+            document.getElementById('hosoContent').value = "";
+            loadHoso();
         }
 
-        // ⚙️ 7. Bộ lọc danh sách hồ sơ theo từng Đơn Vị Công Tác cụ thể
         function filterHoso(unitTag) {
             currentFilter = unitTag;
             document.querySelectorAll('[id^="btn-"]').forEach(btn => {
-                btn.className = "w-full text-left px-3 py-2.5 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition";
+                btn.className = "w-full text-left px-3 py-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2 transition";
             });
-            
             const mapping = { 'ALL': 'btn-ALL', 'CƠ SÁT BDC': 'btn-CA', 'TÒA ÁN': 'btn-TA', 'KHO BẠC': 'btn-KB', 'QUÂN SỰ': 'btn-QS' };
-            document.getElementById(mapping[unitTag]).className = "w-full text-left px-3 py-2.5 rounded-lg bg-blue-50 text-blue-800 flex justify-between items-center border border-blue-100";
-            
+            document.getElementById(mapping[unitTag]).className = "w-full text-left px-3 py-2.5 rounded-lg bg-blue-900 text-white flex justify-between items-center";
             renderHosoList();
         }
 
@@ -338,50 +364,41 @@
             renderHosoList();
         }
 
-        // 🏷️ 8. Kết xuất giao diện danh sách đơn thư kèm 3 Loại Dấu Mộc
         function renderHosoList() {
             const container = document.getElementById('hosoListContainer');
             let list = allHoso;
-            if (currentFilter !== 'ALL') {
-                list = allHoso.filter(h => h.type.includes(currentFilter));
-            }
+            if (currentFilter !== 'ALL') list = allHoso.filter(h => h.type.includes(currentFilter));
 
             if (list.length === 0) {
-                container.innerHTML = `<p class="text-xs text-gray-400 italic text-center py-6">Không tìm thấy hồ sơ lưu trữ thuộc cơ quan ban ngành này.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-4">Không có hồ sơ trong mục này.</p>`;
                 return;
             }
 
             container.innerHTML = list.map(h => {
                 let stampClass = 'stamp-status-pending';
-                let stampText = '⏳ Đang Thụ Lý';
-                if(h.status === 'Đã Phê Duyệt') { stampClass = 'stamp-status-approved'; stampText = '✓ ĐÃ PHÊ DUYỆT'; }
-                if(h.status === 'Đã Từ Chối') { stampClass = 'stamp-status-rejected'; stampText = '✖ BÁC ĐƠN THƯ'; }
-
-                // Giao diện xử lý bút phê dành cho cán bộ ban ngành đăng nhập
-                const showActionArea = currentUser !== null;
+                let stampText = '⏳ Chờ Duyệt';
+                if(h.status === 'Đã Phê Duyệt') { stampClass = 'stamp-status-approved'; stampText = '✓ Phê Duyệt'; }
+                if(h.status === 'Đã Từ Chối') { stampClass = 'stamp-status-rejected'; stampText = '✖ Bác Đơn'; }
 
                 return `
-                    <div class="border border-gray-200 p-4 rounded-xl shadow-xs bg-white relative flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
-                        <div class="space-y-1 text-xs">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded font-mono">${h.id}</span>
-                                <span class="text-gray-700 font-extrabold">${h.type}</span>
+                    <div class="border border-slate-200 p-4 rounded-xl bg-white flex flex-col md:flex-row justify-between gap-4 items-start md:items-center text-xs">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-blue-100 text-blue-950 font-bold px-2 py-0.5 rounded font-mono">${h.id}</span>
+                                <span class="text-slate-800 font-black">${h.type}</span>
                             </div>
-                            <p class="text-gray-600 pt-1"><strong>Người làm đơn:</strong> ${h.citizen_name}</p>
-                            <p class="text-gray-500 font-mono"><strong>Nội dung:</strong> "${h.content}"</p>
-                            ${h.feedback ? `<p class="text-blue-700 bg-blue-50 p-1.5 rounded border border-blue-100 mt-2 font-medium"><strong>Bút phê cán bộ:</strong> ${h.feedback}</p>` : ''}
-                            <p class="text-[10px] text-gray-400 font-medium">Ghi nhận cổng BDC: ${h.time}</p>
+                            <p class="text-slate-700"><strong>Người làm đơn:</strong> ${h.citizen_name}</p>
+                            <p class="text-slate-500 font-mono"><strong>Nội dung:</strong> "${h.content}"</p>
+                            ${h.feedback ? `<p class="text-blue-800 bg-blue-50 p-1.5 rounded border border-blue-100 mt-1"><strong>Cán bộ phê duyệt:</strong> ${h.feedback}</p>` : ''}
                         </div>
-                        
-                        <div class="text-right shrink-0 min-w-[140px] flex flex-col items-end gap-3 w-full md:w-auto">
+                        <div class="text-right shrink-0 min-w-[140px] flex flex-col items-end gap-2 w-full md:w-auto">
                             <div class="digital-stamp ${stampClass}">${stampText}</div>
-                            
-                            ${showActionArea ? `
-                                <div class="w-full space-y-1.5 pt-2 border-t border-gray-100">
-                                    <input type="text" id="fb-${h.id}" placeholder="Ghi ý kiến cán bộ..." class="w-full border border-gray-300 p-1 rounded text-[11px] bg-gray-50">
+                            ${currentUser ? `
+                                <div class="w-full space-y-1 pt-2 border-t border-slate-100">
+                                    <input type="text" id="fb-${h.id}" placeholder="Ý kiến bút phê..." class="w-full border border-slate-300 p-1 rounded text-[11px] bg-slate-50 text-slate-900">
                                     <div class="flex gap-1 justify-end">
-                                        <button onclick="reviewHoso('${h.id}', 'Đã Từ Chối')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-bold cursor-pointer hover:bg-red-500">Bác Đơn</button>
-                                        <button onclick="reviewHoso('${h.id}', 'Đã Phê Duyệt')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px] font-bold cursor-pointer hover:bg-emerald-500">Ký Duyệt</button>
+                                        <button onclick="reviewHoso('${h.id}', 'Đã Từ Chối')" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:bg-red-500">Từ Chối</button>
+                                        <button onclick="reviewHoso('${h.id}', 'Đã Phê Duyệt')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px] font-bold cursor-pointer hover:bg-emerald-500">Duyệt Mộc</button>
                                     </div>
                                 </div>
                             ` : ''}
@@ -396,18 +413,60 @@
             await fetch('/api/hoso/review', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ id, status, feedback: feedback || "Đã kiểm tra dữ liệu điện tử." })
+                body: JSON.stringify({ id, status, feedback: feedback || "Thông tin hợp lệ.", officer_name: currentUser.name })
             });
-            loadHoso();
+            refreshAllData();
         }
 
-        // 🚀 Kích hoạt đồng bộ hóa toàn diện khi trang tải xong
-        window.addEventListener('DOMContentLoaded', () => {
-            initClock();
+        // 📊 NẠP DỮ LIỆU BAN GIÁM SÁT CÁN BỘ & ĐỒNG BỘ NHẬT KÝ THỜI GIAN THỰC
+        async function loadSupervisorAndLogs() {
+            try {
+                // 1. Tải danh sách cán bộ trực ban để giám sát
+                const resUsers = await fetch('/api/users');
+                const users = await resUsers.json();
+                document.getElementById('statTotalStaff').innerText = users.length;
+                
+                const supervisorBody = document.getElementById('supervisorTableBody');
+                supervisorBody.innerHTML = users.map(u => `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-2 border border-slate-200 font-bold text-slate-800">👤 ${u.name}</td>
+                        <td class="p-2 border border-slate-200 text-slate-600">${u.department}</td>
+                        <td class="p-2 border border-slate-200"><span class="px-2 py-0.5 rounded bg-blue-50 text-blue-900 font-bold">${u.role === 'manager' ? 'Quản Lý Cấp Cao' : 'Cán Bộ Tiếp Nhận'}</span></td>
+                        <td class="p-2 border border-slate-200 text-center font-bold text-blue-900">${u.processed_count || 0} hồ sơ</td>
+                        <td class="p-2 border border-slate-200 text-center text-emerald-600 font-bold"><i class="fa-solid fa-shield-cat"></i> ${u.status || 'Hoạt động'}</td>
+                    </tr>
+                `).join('');
+
+                // 2. Tải lịch sử ký duyệt đơn thư của cán bộ
+                const resLogs = await fetch('/api/logs');
+                const logs = await resLogs.json();
+                const logsBody = document.getElementById('logsTableBody');
+                if(logs.length === 0) {
+                    logsBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center italic text-slate-400">Chưa ghi nhận hoạt động đóng mộc công quyền.</td></tr>`;
+                    return;
+                }
+                logsBody.innerHTML = logs.map(l => `
+                    <tr class="hover:bg-slate-50 border-b border-slate-200">
+                        <td class="p-2 font-bold text-slate-700">✍️ ${l.officer}</td>
+                        <td class="p-2 font-mono text-blue-900 font-bold">${l.hoso_id}</td>
+                        <td class="p-2"><span class="font-bold ${l.action === 'Phê Duyệt' ? 'text-emerald-600' : 'text-red-600'}">${l.action}</span></td>
+                        <td class="p-2 text-slate-400">${l.time}</td>
+                        <td class="p-2 text-slate-500 italic">"${l.details}"</td>
+                    </tr>
+                `).join('');
+            } catch (e) { console.error("Lỗi đồng bộ giám sát:", e); }
+        }
+
+        function refreshAllData() {
             loadNews();
             loadHoso();
-            // Thiết lập vòng lặp quét dữ liệu tự động theo chu kỳ thời gian thực
-            setInterval(() => { loadNews(); loadHoso(); }, 10000);
+            loadSupervisorAndLogs();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initClock();
+            refreshAllData();
+            setInterval(refreshAllData, 5000); // Tự động quét cập nhật sau mỗi 5 giây thực tế
         });
     </script>
 </body>
