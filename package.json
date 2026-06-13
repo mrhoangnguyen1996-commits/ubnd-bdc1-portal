@@ -1,0 +1,12 @@
+{
+  "name": "ubnd-bdc-system",
+  "version": "1.0.0",
+  "description": "He thong quan ly du lieu UBND Phuong BDC",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
