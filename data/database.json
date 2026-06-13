@@ -1,46 +1,82 @@
-{
-  "users": [
-    {
-      "username": "quanly_bdc",
-      "password": "manager123",
-      "role": "manager",
-      "name": "Nguyễn Mạnh Hoàng",
-      "department": "Ban Điều Hành Trung Tâm BDC",
-      "status": "Đang hoạt động",
-      "processed_count": 15,
-      "avg_time_sec": 42
-    },
-    {
-      "username": "canbo_ca",
-      "password": "ca123",
-      "role": "staff",
-      "name": "Trần Minh Quang",
-      "department": "Cục Quản Lý Hành Chính",
-      "status": "Đang hoạt động",
-      "processed_count": 8,
-      "avg_time_sec": 65
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+const DB_PATH = path.join(__dirname, 'data', 'database.json');
+
+function readDB() { return JSON.parse(fs.readFileSync(DB_PATH, 'utf8')); }
+function writeDB(data) { fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2)); }
+
+app.post('/api/auth/login', (req, res) => {
+    const { username, password } = req.body;
+    const db = readDB();
+    const user = db.users.find(u => u.username === username && u.password === password);
+    if (user) return res.json({ success: true, user });
+    return res.status(401).json({ success: false, message: "Thông tin không chính xác!" });
+});
+
+app.get('/api/news', (req, res) => res.json(readDB().news || []));
+app.get('/api/hoso', (req, res) => res.json(readDB().hoso || []));
+app.get('/api/logs', (req, res) => res.json(readDB().logs || []));
+app.get('/api/users', (req, res) => res.json(readDB().users || []));
+
+app.post('/api/hoso/submit', (req, res) => {
+    const { citizen_name, type, content } = req.body;
+    const db = readDB();
+    const newHoso = {
+        id: 'HS-' + Math.floor(1000 + Math.random() * 9000),
+        citizen_name, type, content,
+        status: "Chờ duyệt",
+        time: new Date().toLocaleString('vi-VN'),
+        submit_timestamp: Date.now(), // Lưu mốc thời gian nộp đơn đơn vị ms
+        feedback: ""
+    };
+    db.hoso.unshift(newHoso);
+    writeDB(db);
+    res.json({ success: true });
+});
+
+// PHÊ DUYỆT ĐƠN - TÍNH TOÁN VÀ ĐO LƯỜNG TỐC ĐỘ PHẢN HỒI THỰC TẾ
+app.post('/api/hoso/review', (req, res) => {
+    const { id, status, feedback, officer_name } = req.body;
+    const db = readDB();
+    const item = db.hoso.find(h => h.id === id);
+    if (!item) return res.status(404).json({ success: false });
+
+    item.status = status;
+    item.feedback = feedback;
+
+    // Tính thời gian phản hồi thực tế (Giây)
+    const timeDiffSeconds = Math.max(1, Math.floor((Date.now() - item.submit_timestamp) / 1000));
+    let timeDiffString = timeDiffSeconds + " giây";
+    if (timeDiffSeconds >= 60) {
+        timeDiffString = Math.floor(timeDiffSeconds / 60) + " phút " + (timeDiffSeconds % 60) + " giây";
     }
-  ],
-  "news": [
-    {
-      "id": "NEWS-2026-001",
-      "title": "Vận hành chính thức Cổng thông tin điện tử liên thông BDC",
-      "content": "Số hóa toàn bộ quy trình tiếp nhận đơn thư, số hóa hộ khẩu, căn cước cư dân và hệ thống phê duyệt đóng mộc trực tuyến liên ban ngành.",
-      "author": "Ban Điều Hành",
-      "time": "14/06/2026, 06:15:00"
+
+    db.logs.unshift({
+        id: 'LOG-' + Date.now(),
+        officer: officer_name,
+        hoso_id: id,
+        action: status === 'Đã Phê Duyệt' ? 'Phê Duyệt' : 'Bác Đơn Thư',
+        time: new Date().toLocaleString('vi-VN'),
+        duration: timeDiffString,
+        details: feedback
+    });
+
+    const staff = db.users.find(u => u.name === officer_name);
+    if (staff) {
+        staff.processed_count = (staff.processed_count || 0) + 1;
+        // Cập nhật thời gian xử lý trung bình của cán bộ
+        staff.avg_time_sec = staff.avg_time_sec ? Math.floor((staff.avg_time_sec + timeDiffSeconds) / 2) : timeDiffSeconds;
     }
-  ],
-  "hoso": [
-    {
-      "id": "HS-7712",
-      "citizen_name": "Nguyễn Văn An",
-      "type": "CƠ SÁT BDC - Khai báo Tạm trú / Tạm vắng",
-      "content": "Khai báo tạm trú tại khu vực trung tâm đô thị BDC từ tháng 06/2026.",
-      "status": "Chờ duyệt",
-      "time": "14/06/2026, 06:10:00",
-      "submit_timestamp": 1781478600000,
-      "feedback": ""
-    }
-  ],
-  "logs": []
-}
+
+    writeDB(db);
+    res.json({ success: true });
+});
+
+app.listen(PORT, () => console.log(`🏛️ Trung tâm điều hành liên thông hoạt động tại: http://localhost:${PORT}`));
