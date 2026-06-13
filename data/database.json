@@ -1,70 +1,54 @@
 {
   "users": [
     {
-      "username": "chu_tich",
-      "password": "admin123",
-      "role": "superadmin",
-      "name": "Bùi Đình Cường",
-      "department": "Văn Phòng Chủ Tịch tối cao"
+      "username": "quanly_bdc",
+      "password": "manager123",
+      "role": "manager",
+      "name": "Nguyễn Mạnh Hoàng",
+      "department": "Ban Điều Hành Trung Tâm BDC"
     },
     {
-      "username": "bo_truong_ca",
+      "username": "canbo_ca",
       "password": "ca123",
-      "role": "lanhdao",
+      "role": "staff",
       "name": "Trần Minh Quang",
-      "department": "Bộ Công An"
-    }
-  ],
-  "system_config": {
-    "security_level": "BÌNH THƯỜNG"
-  },
-  "warrants": [
-    {
-      "id": "W-902",
-      "name": "Robber_Pro",
-      "crime": "Cướp ngân hàng trung ương, có vũ khí nguy hiểm",
-      "bounty": "50,000",
-      "time": "13/06/2026"
-    }
-  ],
-  "citizens": {
-    "Nguyen_Manh_Hoang": {
-      "cccd": "BDC-2026-001",
-      "chucvu": "Giám sát Mua hàng",
-      "trangthai": "Hợp pháp",
-      "police_record": "Lý lịch sạch, chấp hành tốt pháp luật.",
-      "military_status": "Đủ điều kiện nhập ngũ (Đã đăng ký)",
-      "bank_account": "VTB-102938",
-      "bank_balance": 150000000
-    }
-  },
-  "hoso": [
-    {
-      "id": "HS-9999",
-      "name": "Nguyen_Manh_Hoang",
-      "type": "CÔNG AN - Khai báo tạm trú & Sở hữu vũ khí hợp pháp",
-      "content": "Yêu cầu cấp phép sử dụng công cụ hỗ trợ cho lực lượng giám sát quản lý.",
-      "status": "Chờ duyệt",
-      "time": "13/06/2026, 22:15:00",
-      "feedbacks": []
+      "department": "Cục Quản Lý Hành Chính"
     }
   ],
   "news": [
     {
-      "id": "NEWS-1001",
-      "tag": "QUYẾT ĐỊNH",
-      "title": "Chính thức vận hành Cổng thông tin điện tử BDC",
-      "content": "Ban hành quy chế phối hợp liên ngành điện tử giữa Bộ Công An, Ban Chỉ Huy Quân Sự và Tòa Án Tối Cao trên nền tảng số hóa BDC quốc gia.",
-      "time": "13/06/2026, 22:00:00",
-      "important": true
+      "id": "NEWS-2026-001",
+      "title": "Vận hành chính thức Cổng thông tin điện tử liên thông BDC",
+      "content": "Số hóa toàn bộ quy trình tiếp nhận đơn thư, số hóa hộ khẩu, căn cước cư dân và hệ thống phê duyệt đóng mộc trực tuyến liên ban ngành.",
+      "author": "Ban Điều Hành",
+      "time": "13/06/2026, 23:15:00"
     },
     {
-      "id": "NEWS-1002",
-      "tag": "THÔNG BÁO",
-      "title": "Tăng cường công tác kiểm tra hành chính ban đêm",
-      "content": "Yêu cầu lực lượng tuần tra kiểm soát nghiêm ngặt các tuyến đường trục chính, xử lý nghiêm hành vi gây rối trật tự công cộng.",
-      "time": "13/06/2026, 22:10:00",
-      "important": false
+      "id": "NEWS-2026-002",
+      "title": "Tăng cường kiểm tra, rà soát nộp hồ sơ tạm trú",
+      "content": "Yêu cầu các đơn vị công tác trực thuộc đôn đốc người dân hoàn thiện thủ tục khai báo thông tin đúng thời hạn quy định.",
+      "author": "Cục Quản Lý Hành Chính",
+      "time": "13/06/2026, 23:20:00"
+    }
+  ],
+  "hoso": [
+    {
+      "id": "HS-7712",
+      "citizen_name": "Nguyễn Văn An",
+      "type": "CƠ SÁT BDC - Khai báo Tạm trú / Tạm vắng",
+      "content": "Khai báo tạm trú tại khu vực trung tâm đô thị BDC từ tháng 06/2026.",
+      "status": "Chờ duyệt",
+      "time": "13/06/2026, 22:10:15",
+      "feedback": ""
+    },
+    {
+      "id": "HS-8840",
+      "citizen_name": "Lê Thị Bưởi",
+      "type": "KHO BẠC - Đơn cấp phép Thành lập Doanh nghiệp",
+      "content": "Yêu cầu thành lập công ty TNHH dịch vụ vận tải logistics Hoàng Gia.",
+      "status": "Đã Phê Duyệt",
+      "time": "13/06/2026, 19:40:22",
+      "feedback": "Hồ sơ đầy đủ điều kiện pháp lý."
     }
   ],
   "logs": []
