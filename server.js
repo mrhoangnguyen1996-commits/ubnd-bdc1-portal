@@ -17,7 +17,7 @@ app.post('/api/auth/login', (req, res) => {
     const db = readDB();
     const user = db.users.find(u => u.username === username && u.password === password);
     if (user) return res.json({ success: true, user });
-    return res.status(401).json({ success: false, message: "Thông tin không chính xác!" });
+    return res.status(401).json({ success: false, message: "Thông tin chứng thư không chính xác!" });
 });
 
 app.get('/api/news', (req, res) => res.json(readDB().news || []));
@@ -25,23 +25,34 @@ app.get('/api/hoso', (req, res) => res.json(readDB().hoso || []));
 app.get('/api/logs', (req, res) => res.json(readDB().logs || []));
 app.get('/api/users', (req, res) => res.json(readDB().users || []));
 
+app.post('/api/news/add', (req, res) => {
+    const { title, content, author } = req.body;
+    const db = readDB();
+    const newArticle = { id: 'NEWS-' + Date.now(), title, content, author, time: new Date().toLocaleString('vi-VN') };
+    db.news.unshift(newArticle);
+    writeDB(db);
+    res.json({ success: true });
+});
+
+app.post('/api/news/delete', (req, res) => {
+    const { newsId, role } = req.body;
+    if (role !== 'manager') return res.status(430).json({ success: false, message: "Từ chối! Quyền hạn không đủ." });
+    const db = readDB();
+    db.news = db.news.filter(n => n.id !== newsId);
+    writeDB(db);
+    res.json({ success: true });
+});
+
 app.post('/api/hoso/submit', (req, res) => {
     const { citizen_name, type, content } = req.body;
     const db = readDB();
-    const newHoso = {
-        id: 'HS-' + Math.floor(1000 + Math.random() * 9000),
-        citizen_name, type, content,
-        status: "Chờ duyệt",
-        time: new Date().toLocaleString('vi-VN'),
-        submit_timestamp: Date.now(), // Lưu mốc thời gian nộp đơn đơn vị ms
-        feedback: ""
-    };
+    const newHoso = { id: 'HS-' + Math.floor(1000 + Math.random() * 9000), citizen_name, type, content, status: "Chờ duyệt", time: new Date().toLocaleString('vi-VN'), feedback: "" };
     db.hoso.unshift(newHoso);
     writeDB(db);
     res.json({ success: true });
 });
 
-// PHÊ DUYỆT ĐƠN - TÍNH TOÁN VÀ ĐO LƯỜNG TỐC ĐỘ PHẢN HỒI THỰC TẾ
+// KÝ DUYỆT HỒ SƠ - ĐỒNG BỘ GHI NHẬT KÝ VÀ TĂNG THỐNG KÊ CÁN BỘ
 app.post('/api/hoso/review', (req, res) => {
     const { id, status, feedback, officer_name } = req.body;
     const db = readDB();
@@ -51,32 +62,24 @@ app.post('/api/hoso/review', (req, res) => {
     item.status = status;
     item.feedback = feedback;
 
-    // Tính thời gian phản hồi thực tế (Giây)
-    const timeDiffSeconds = Math.max(1, Math.floor((Date.now() - item.submit_timestamp) / 1000));
-    let timeDiffString = timeDiffSeconds + " giây";
-    if (timeDiffSeconds >= 60) {
-        timeDiffString = Math.floor(timeDiffSeconds / 60) + " phút " + (timeDiffSeconds % 60) + " giây";
-    }
-
+    // 1. Thêm vào lịch sử xử lý hồ sơ công dân
     db.logs.unshift({
         id: 'LOG-' + Date.now(),
         officer: officer_name,
         hoso_id: id,
         action: status === 'Đã Phê Duyệt' ? 'Phê Duyệt' : 'Bác Đơn Thư',
         time: new Date().toLocaleString('vi-VN'),
-        duration: timeDiffString,
         details: feedback
     });
 
+    // 2. Tăng số lượng thống kê hiệu suất công tác của cán bộ đó
     const staff = db.users.find(u => u.name === officer_name);
     if (staff) {
         staff.processed_count = (staff.processed_count || 0) + 1;
-        // Cập nhật thời gian xử lý trung bình của cán bộ
-        staff.avg_time_sec = staff.avg_time_sec ? Math.floor((staff.avg_time_sec + timeDiffSeconds) / 2) : timeDiffSeconds;
     }
 
     writeDB(db);
     res.json({ success: true });
 });
 
-app.listen(PORT, () => console.log(`🏛️ Trung tâm điều hành liên thông hoạt động tại: http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🏛️ Cổng BDC hoạt động tại: http://localhost:${PORT}`));
