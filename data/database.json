@@ -5,7 +5,26 @@
       "password": "admin123",
       "role": "superadmin",
       "name": "Bùi Đình Cường",
-      "department": "Ban Lãnh Đạo tối cao"
+      "department": "Văn Phòng Chủ Tịch tối cao"
+    },
+    {
+      "username": "bo_truong_ca",
+      "password": "ca123",
+      "role": "lanhdao",
+      "name": "Trần Minh Quang",
+      "department": "Bộ Công An Cấp Phường"
+    }
+  ],
+  "system_config": {
+    "security_level": "BÌNH THƯỜNG"
+  },
+  "warrants": [
+    {
+      "id": "W-902",
+      "name": "Robber_Pro",
+      "crime": "Cướp ngân hàng trung ương, có vũ khí nguy hiểm",
+      "bounty": "50,000",
+      "time": "13/06/2026"
     }
   ],
   "citizens": {
@@ -13,7 +32,7 @@
       "cccd": "BDC-2026-001",
       "chucvu": "Giám sát Mua hàng",
       "trangthai": "Hợp pháp",
-      "police_record": "Lý lịch sạch, chấp hành tốt pháp luật",
+      "police_record": "Lý lịch sạch, chấp hành tốt pháp luật.",
       "military_status": "Đủ điều kiện nhập ngũ (Đã đăng ký)",
       "bank_account": "VTB-102938",
       "bank_balance": 150000000
@@ -22,11 +41,12 @@
   "hoso": [],
   "news": [
     {
-      "id": "NEWS-1",
+      "id": "NEWS-INIT",
       "tag": "QUYẾT ĐỊNH",
-      "title": "Áp dụng hệ thống phân quyền cán bộ toàn diện năm 2026",
-      "content": "Yêu cầu các trưởng bộ phận liên hệ Chủ Tịch để nhận tài khoản cán bộ riêng biệt. Nghiêm cấm dùng chung tài khoản.",
-      "time": "13/06/2026, 21:00:00"
+      "title": "Kích hoạt hệ thống quản trị liên thông thế hệ mới",
+      "content": "Toàn bộ hệ thống quản lý quốc gia đã được nâng cấp lên phiên bản số hóa toàn diện. Yêu cầu cán bộ các ban ngành nghiêm túc thực hiện nhiệm vụ.",
+      "time": "13/06/2026, 21:00:00",
+      "important": true
     }
   ],
   "logs": []
