@@ -5,14 +5,18 @@
       "password": "manager123",
       "role": "manager",
       "name": "Nguyễn Mạnh Hoàng",
-      "department": "Ban Điều Hành Trung Tâm BDC"
+      "department": "Ban Điều Hành Trung Tâm BDC",
+      "status": "Đang hoạt động",
+      "processed_count": 14
     },
     {
       "username": "canbo_ca",
       "password": "ca123",
       "role": "staff",
       "name": "Trần Minh Quang",
-      "department": "Cục Quản Lý Hành Chính"
+      "department": "Cục Quản Lý Hành Chính",
+      "status": "Đang hoạt động",
+      "processed_count": 8
     }
   ],
   "news": [
@@ -22,13 +26,6 @@
       "content": "Số hóa toàn bộ quy trình tiếp nhận đơn thư, số hóa hộ khẩu, căn cước cư dân và hệ thống phê duyệt đóng mộc trực tuyến liên ban ngành.",
       "author": "Ban Điều Hành",
       "time": "13/06/2026, 23:15:00"
-    },
-    {
-      "id": "NEWS-2026-002",
-      "title": "Tăng cường kiểm tra, rà soát nộp hồ sơ tạm trú",
-      "content": "Yêu cầu các đơn vị công tác trực thuộc đôn đốc người dân hoàn thiện thủ tục khai báo thông tin đúng thời hạn quy định.",
-      "author": "Cục Quản Lý Hành Chính",
-      "time": "13/06/2026, 23:20:00"
     }
   ],
   "hoso": [
@@ -40,16 +37,16 @@
       "status": "Chờ duyệt",
       "time": "13/06/2026, 22:10:15",
       "feedback": ""
-    },
-    {
-      "id": "HS-8840",
-      "citizen_name": "Lê Thị Bưởi",
-      "type": "KHO BẠC - Đơn cấp phép Thành lập Doanh nghiệp",
-      "content": "Yêu cầu thành lập công ty TNHH dịch vụ vận tải logistics Hoàng Gia.",
-      "status": "Đã Phê Duyệt",
-      "time": "13/06/2026, 19:40:22",
-      "feedback": "Hồ sơ đầy đủ điều kiện pháp lý."
     }
   ],
-  "logs": []
+  "logs": [
+    {
+      "id": "LOG-001",
+      "officer": "Trần Minh Quang",
+      "hoso_id": "HS-8840",
+      "action": "Phê Duyệt",
+      "time": "13/06/2026, 19:40:22",
+      "details": "Đã đóng mộc xanh, chuyển hồ sơ sang trạng thái hoàn thành."
+    }
+  ]
 }
