@@ -7,8 +7,7 @@
       "name": "Nguyễn Mạnh Hoàng",
       "department": "Ban Điều Hành Trung Tâm BDC",
       "status": "Đang hoạt động",
-      "processed_count": 15,
-      "avg_time_sec": 42
+      "processed_count": 14
     },
     {
       "username": "canbo_ca",
@@ -17,8 +16,7 @@
       "name": "Trần Minh Quang",
       "department": "Cục Quản Lý Hành Chính",
       "status": "Đang hoạt động",
-      "processed_count": 8,
-      "avg_time_sec": 65
+      "processed_count": 8
     }
   ],
   "news": [
@@ -27,7 +25,7 @@
       "title": "Vận hành chính thức Cổng thông tin điện tử liên thông BDC",
       "content": "Số hóa toàn bộ quy trình tiếp nhận đơn thư, số hóa hộ khẩu, căn cước cư dân và hệ thống phê duyệt đóng mộc trực tuyến liên ban ngành.",
       "author": "Ban Điều Hành",
-      "time": "14/06/2026, 06:15:00"
+      "time": "13/06/2026, 23:15:00"
     }
   ],
   "hoso": [
@@ -37,10 +35,18 @@
       "type": "CƠ SÁT BDC - Khai báo Tạm trú / Tạm vắng",
       "content": "Khai báo tạm trú tại khu vực trung tâm đô thị BDC từ tháng 06/2026.",
       "status": "Chờ duyệt",
-      "time": "14/06/2026, 06:10:00",
-      "submit_timestamp": 1781478600000,
+      "time": "13/06/2026, 22:10:15",
       "feedback": ""
     }
   ],
-  "logs": []
+  "logs": [
+    {
+      "id": "LOG-001",
+      "officer": "Trần Minh Quang",
+      "hoso_id": "HS-8840",
+      "action": "Phê Duyệt",
+      "time": "13/06/2026, 19:40:22",
+      "details": "Đã đóng mộc xanh, chuyển hồ sơ sang trạng thái hoàn thành."
+    }
+  ]
 }
