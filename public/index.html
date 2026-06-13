@@ -3,252 +3,443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UBND PHƯỜNG BDC - CỔNG THÔNG TIN SỐ</title>
+    <title>HỆ THỐNG QUẢN LÝ QUỐC GIA TẬP TRUNG</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-slate-100 text-slate-800 font-sans">
 
-    <header class="bg-red-700 text-white shadow-lg border-b-4 border-yellow-400">
-        <div class="max-w-6xl mx-auto px-4 py-6 text-center">
-            <h2 class="text-xs font-bold tracking-widest uppercase text-yellow-300">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h2>
-            <h3 class="text-xs font-semibold uppercase mt-0.5">Độc lập - Tự do - Hạnh phúc</h3>
-            <hr class="w-20 mx-auto border-yellow-400 my-2">
-            <h1 class="text-3xl font-extrabold mt-2">🏛️ UBND PHƯỜNG BDC</h1>
-            <p class="text-xs text-red-100 mt-1 uppercase font-medium">Hệ thống số hóa quản lý dân cư & dịch vụ công Roleplay</p>
-        </div>
+    <header class="bg-gradient-to-r from-red-800 to-red-700 text-white shadow-md border-b-4 border-yellow-500 py-6 text-center">
+        <h2 class="text-xs font-bold tracking-widest text-yellow-300 uppercase">CỔNG THÔNG TIN TỔNG HỢP LIÊN BỘ NGÀNH PHƯỜNG BDC</h2>
+        <h1 class="text-2xl font-black mt-2 tracking-wide">🏛️ TRUNG TÂM ĐIỀU HÀNH & GIÁM SÁT DỮ LIỆU SỐ</h1>
     </header>
 
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm flex justify-center">
-        <button onclick="switchTab('trangchu')" id="tab-trangchu" class="px-6 py-4 font-bold text-red-700 border-b-2 border-red-600">Trang Chủ</button>
-        <button onclick="switchTab('tracuu')" id="tab-tracuu" class="px-6 py-4 text-gray-500">Tra Cứu Dân Cư</button>
-        <button onclick="switchTab('dichvu')" id="tab-dichvu" class="px-6 py-4 text-gray-500">Nộp Đơn Trực Tuyến</button>
-        <button onclick="openAdminModal()" id="tab-admin" class="px-6 py-4 text-blue-600 font-semibold"><i class="fa-solid fa-user-shield"></i> Cán Bộ Đăng Nhập</button>
+    <nav class="bg-white border-b sticky top-0 z-50 shadow-sm flex flex-wrap justify-center text-xs font-bold uppercase tracking-wider">
+        <button onclick="switchTab('trangchu')" id="tab-trangchu" class="px-5 py-4 text-red-700 border-b-2 border-red-600">Trang Chủ</button>
+        <button onclick="switchTab('tracuu')" id="tab-tracuu" class="px-5 py-4 text-slate-500">Hồ Sơ Liên Thông</button>
+        <button onclick="switchTab('dichvu')" id="tab-dichvu" class="px-5 py-4 text-slate-500">Dịch Vụ Công & Chat</button>
+        <button onclick="openLoginModal()" id="tab-login" class="px-5 py-4 text-blue-600"><i class="fa-solid fa-lock"></i> Đăng Nhập Hệ Thống</button>
+        <button onclick="switchTab('admin')" id="tab-admin" class="hidden px-5 py-4 text-emerald-600">⚙️ Panel Cán Bộ</button>
+        <button onclick="switchTab('superadmin')" id="tab-superadmin" class="hidden px-5 py-4 text-purple-600">👑 Giám Sát Tối Cao</button>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 min-h-[60vh]">
-        
-        <section id="content-trangchu" class="tab-content block">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <span class="bg-red-100 text-red-700 text-xs font-bold px-2.5 py-1 rounded">THÔNG BÁO</span>
-                <h3 class="text-xl font-bold mt-2 text-gray-900">Vận hành Cổng thông tin điện tử UBND Phường BDC</h3>
-                <p class="text-gray-600 text-sm mt-2 leading-relaxed">Hệ thống chính thức đưa vào hoạt động công khai nhằm phục vụ công dân tra cứu lý lịch tư pháp, đăng ký thẻ căn cước và hỗ trợ cán bộ ban ngành quản lý hồ sơ trực tuyến thuận tiện hơn.</p>
-            </div>
-        </section>
+    <main class="max-w-7xl mx-auto px-4 py-8 min-h-[65vh]">
 
-        <section id="content-tracuu" class="tab-content hidden">
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
-                <h3 class="text-lg font-bold mb-4">Tra cứu hồ sơ định danh công dân</h3>
-                <div class="flex gap-2 max-w-md">
-                    <input type="text" id="searchName" placeholder="Nhập tên nhân vật (Ví dụ: Bui_Dinh_Cuong)" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-red-600">
-                    <button onclick="searchCitizen()" class="bg-red-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-red-700">Tìm kiếm</button>
+        <section id="content-trangchu" class="tab-content block space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-4">
+                    <h3 class="text-md font-extrabold border-l-4 border-red-600 pl-2 text-slate-900 uppercase tracking-wide">📰 Bản Tin Văn Bản & Chỉ Thị Hành Chính</h3>
+                    <div id="newsContainer" class="space-y-4"></div>
+                </div>
+                <div class="space-y-4 text-xs">
+                    <h3 class="text-md font-extrabold border-l-4 border-blue-600 pl-2 text-slate-900 uppercase tracking-wide">📞 Danh Bạ Đường Dây Nóng</h3>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
+                        <div class="flex items-center gap-3"><i class="fa-solid fa-shield-halved text-blue-600 text-lg"></i><div><p class="font-bold">Công An Phường BDC</p><p class="text-slate-500">Hotline: CAP-BDC (Bảo an & Tạm trú)</p></div></div>
+                        <div class="flex items-center gap-3"><i class="fa-solid fa-person-military-to-person text-red-600 text-lg"></i><div><p class="font-bold">Ban Chỉ Huy Quân Sự</p><p class="text-slate-500">Hotline: QS-BDC (Lệnh quân ngũ)</p></div></div>
+                        <div class="flex items-center gap-3"><i class="fa-solid fa-building-columns text-amber-600 text-lg"></i><div><p class="font-bold">Ngân Hàng Ngoại Thương BDC</p><p class="text-slate-500">Tổng đài giải ngân: NH-BDC</p></div></div>
+                    </div>
                 </div>
             </div>
-            <div id="searchResult" class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-200"></div>
         </section>
 
-        <section id="content-dichvu" class="tab-content hidden">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm border md:col-span-2">
-                    <h3 class="text-lg font-bold mb-4">Gửi hồ sơ hành chính điện tử</h3>
-                    <form onsubmit="submitForm(event)" class="space-y-4">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <input type="text" id="formName" required placeholder="Tên nhân vật Roblox của bạn" class="w-full px-3 py-2 border rounded-lg text-sm">
-                            <select id="formType" class="w-full px-3 py-2 border rounded-lg text-sm">
-                                <option value="Đăng ký Căn Cước Công Dân">Đăng ký Căn Cước Công Dân</option>
-                                <option value="Xin cấp Giấy Phép Kinh Doanh">Xin cấp Giấy Phép Kinh Doanh</option>
-                                <option value="Đơn Khiếu Nại Tố Cáo">Đơn Khiếu Nại Tố Cáo</option>
+        <section id="content-tracuu" class="tab-content hidden max-w-2xl mx-auto">
+            <div class="bg-white p-6 rounded-xl border shadow-xs space-y-4">
+                <h3 class="text-md font-bold text-slate-900 uppercase text-center">🔍 Hệ Thống Truy Xuất Hồ Sơ Cư Dân Quốc Gia</h3>
+                <div class="flex gap-2">
+                    <input type="text" id="searchName" placeholder="Nhập Họ_Tên nhân vật cần kiểm tra..." class="w-full px-4 py-2 border rounded-lg text-sm">
+                    <button onclick="searchCitizen()" class="bg-red-600 text-white font-bold px-6 py-2 rounded-lg text-sm">TRUY XUẤT</button>
+                </div>
+                <div id="searchResult" class="hidden p-5 bg-slate-50 rounded-lg border space-y-4"></div>
+            </div>
+        </section>
+
+        <section id="content-dichvu" class="tab-content hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-5 rounded-xl border shadow-xs text-xs space-y-3">
+                <h3 class="text-sm font-bold border-b pb-2 uppercase text-slate-700">📋 Gửi Đơn Hành Chính Trực Tuyến</h3>
+                <form onsubmit="submitForm(event)" class="space-y-3">
+                    <input type="text" id="formName" required placeholder="Tên nhân vật Roblox của bạn (Họ_Tên)" class="w-full px-3 py-2 border rounded">
+                    <select id="formType" class="w-full px-3 py-2 border rounded">
+                        <option value="Đăng ký Thẻ Căn Cước Công Dân (Công An)">Đăng ký Thẻ Căn Cước Công Dân (Công An)</option>
+                        <option value="Khai báo Tạm trú/Tạm vắng (Công An)">Khai báo Tạm trú/Tạm vắng (Công An)</option>
+                        <option value="Nộp Đơn Tình Nguyện Nhập Ngũ (Quân Sự)">Nộp Đơn Tình Nguyện Nhập Ngũ (Quân Sự)</option>
+                        <option value="Yêu Cầu Mở Số Tài Khoản Doanh Nghiệp (Ngân Hàng)">Yêu Cầu Mở Số Tài Khoản Doanh Nghiệp (Ngân Hàng)</option>
+                    </select>
+                    <textarea id="formContent" rows="4" required placeholder="Ghi cụ thể nội dung nguyện vọng kèm link chứng từ (nếu có)..." class="w-full px-3 py-2 border rounded"></textarea>
+                    <button type="submit" class="w-full bg-red-600 text-white font-bold py-2 rounded uppercase">Nộp Đơn Lên Cơ Quan</button>
+                </form>
+            </div>
+
+            <div class="bg-white p-5 rounded-xl border shadow-xs lg:col-span-2 flex flex-col justify-between min-h-[350px] text-xs">
+                <div>
+                    <h3 class="text-sm font-bold border-b pb-2 uppercase text-slate-700">💬 Tra Cứu Mã Đơn & Trao Đổi Hai Chiều</h3>
+                    <div class="flex gap-2 my-2">
+                        <input type="text" id="trackIdInput" placeholder="Nhập mã đơn thư (Ví dụ: HS-1234)" class="w-full px-3 py-1.5 border rounded">
+                        <button onclick="trackHoso()" class="bg-blue-600 text-white font-bold px-4 py-1.5 rounded">KIỂM TRA</button>
+                    </div>
+                    <div id="chatHosoInfo" class="bg-slate-50 p-2 rounded border mb-3 hidden"></div>
+                    <div id="chatMessages" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+                </div>
+                <div id="chatInputArea" class="hidden flex gap-2 mt-3 border-t pt-2">
+                    <input type="text" id="chatSenderInput" placeholder="Tên người rep..." class="w-1/4 px-2 py-1.5 border rounded">
+                    <input type="text" id="chatTextInput" placeholder="Nhập nội dung phản hồi gửi lên bộ ngành..." class="w-3/4 px-2 py-1.5 border rounded">
+                    <button onclick="sendFeedback(false)" class="bg-emerald-600 text-white font-bold px-4 py-1.5 rounded">GỬI</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-admin" class="tab-content hidden space-y-6 text-xs">
+            <div class="bg-white p-4 rounded-xl border shadow-xs">
+                <h4 class="text-sm font-bold border-b pb-2 mb-4 text-slate-800 uppercase"><i class="fa-solid fa-chart-pie text-emerald-600"></i> Hệ Thống Biểu Đồ Thống Kê Tổng Thể Toàn Bộ Ngành</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="bg-slate-50 p-3 rounded border">
+                        <p class="font-bold text-slate-500">Tổng Cư Dân Đăng Ký</p>
+                        <h2 id="statCitizens" class="text-2xl font-black text-blue-600 mt-1">0</h2>
+                        <p class="font-bold text-slate-500 mt-3">Tổng Tiền Ký Gửi Ngân Hàng</p>
+                        <h2 id="statCash" class="text-xl font-black text-amber-600 mt-1">0$</h2>
+                    </div>
+                    <div class="max-w-[220px] mx-auto"><canvas id="lawChart"></canvas><p class="text-[10px] mt-1 font-bold text-slate-500">Tỷ lệ Tội phạm (CAP)</p></div>
+                    <div class="max-w-[220px] mx-auto"><canvas id="docsChart"></canvas><p class="text-[10px] mt-1 font-bold text-slate-500">Tiến độ Duyệt Đơn (UBND)</p></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-4 rounded-xl border shadow-xs space-y-3">
+                    <h4 class="font-bold text-blue-700 border-b pb-1 uppercase">📢 Ban Hành Văn Bản Bảng Tin</h4>
+                    <form onsubmit="adminPostNews(event)" class="space-y-2">
+                        <select id="admNewsTag" class="w-full px-2 py-1.5 border rounded"><option value="THÔNG BÁO">THÔNG BÁO</option><option value="QUYẾT ĐỊNH">QUYẾT ĐỊNH</option><option value="BÁO ĐỘNG">BÁO ĐỘNG</option></select>
+                        <input type="text" id="admNewsTitle" required placeholder="Tiêu đề thông cáo..." class="w-full px-2 py-1.5 border rounded">
+                        <textarea id="admNewsContent" rows="3" required placeholder="Nội dung điều luật hành chính..." class="w-full px-2 py-1.5 border rounded"></textarea>
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-1.5 rounded">PHÁT HÀNH TIN</button>
+                    </form>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border shadow-xs space-y-2">
+                    <h4 class="font-bold text-blue-700 border-b pb-1 uppercase">👤 Cập Nhật Hồ Sơ Gốc Liên Ngành</h4>
+                    <form onsubmit="adminSaveCitizen(event)" class="space-y-1.5">
+                        <input type="text" id="admName" required placeholder="Tên nhân vật (Họ_Tên)" class="w-full px-2 py-1 border rounded">
+                        <input type="text" id="admCCCD" required placeholder="Mã định danh CCCD" class="w-full px-2 py-1 border rounded">
+                        <input type="text" id="admChucvu" required placeholder="Chức danh công vụ/Việc làm" class="w-full px-2 py-1 border rounded">
+                        <select id="admTrangthai" class="w-full px-2 py-1 border rounded"><option value="Hợp pháp">Hợp pháp</option><option value="Đang bị truy nã">Đang bị truy nã</option></select>
+                        <input type="text" id="admPolice" required placeholder="Hồ sơ tiền án án tích (Công An)" class="w-full px-2 py-1 border rounded">
+                        <input type="text" id="admMilitary" required placeholder="Tình trạng Nghĩa vụ quân sự (Quân Đội)" class="w-full px-2 py-1 border rounded">
+                        <div class="flex gap-1">
+                            <input type="text" id="admBankAcc" required placeholder="Số tài khoản Bank" class="w-1/2 px-2 py-1 border rounded">
+                            <input type="number" id="admBankBal" required placeholder="Số dư khả dụng $" class="w-1/2 px-2 py-1 border rounded">
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-1.5 rounded">CẬP NHẬT CƠ SỞ DỮ LIỆU</button>
+                    </form>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border shadow-xs flex flex-col">
+                    <h4 class="font-bold text-blue-700 border-b pb-1 mb-2 uppercase">📥 Thẩm Định Đơn Thư Ban Ngành</h4>
+                    <div id="admHosoList" class="space-y-3 max-h-[350px] overflow-y-auto flex-1 pr-1"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="content-superadmin" class="tab-content hidden text-xs space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-xl border border-purple-200 shadow-sm space-y-3">
+                    <h4 class="font-bold text-purple-800 text-sm border-b pb-2 uppercase"><i class="fa-solid fa-user-plus"></i> Cấp Phát Tài Khoản Cán Bộ Mới</h4>
+                    <form onsubmit="superAdminCreateUser(event)" class="space-y-2">
+                        <div><label class="font-bold">Tên đăng nhập cán bộ (Viết liền không dấu)</label><input type="text" id="suNewUser" required class="w-full px-3 py-1.5 border rounded"></div>
+                        <div><label class="font-bold">Mật mã bảo mật ban đầu</label><input type="password" id="suNewPass" required class="w-full px-3 py-1.5 border rounded"></div>
+                        <div><label class="font-bold">Họ và Tên Cán Bộ</label><input type="text" id="suNewName" required placeholder="Ví dụ: Đại tá Nguyễn Văn A" class="w-full px-3 py-1.5 border rounded"></div>
+                        <div><label class="font-bold">Cơ quan trực thuộc chỉ định</label>
+                            <select id="suNewDept" class="w-full px-3 py-1.5 border rounded">
+                                <option value="Bộ Công An Cấp Phường">Bộ Công An Cấp Phường</option>
+                                <option value="Ban Chỉ Huy Quân Sự">Ban Chỉ Huy Quân Sự</option>
+                                <option value="Hệ Thống Ngân Hàng Trung Ương">Hệ Thống Ngân Hàng Trung Ương</option>
+                                <option value="Văn Phòng Tư Pháp - Hộ Tịch">Văn Phòng Tư Pháp - Hộ Tịch</option>
                             </select>
                         </div>
-                        <textarea id="formContent" rows="4" required placeholder="Nội dung chi tiết yêu cầu..." class="w-full px-3 py-2 border rounded-lg text-sm"></textarea>
-                        <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 rounded-lg text-sm uppercase">Nộp hồ sơ ngay</button>
-                    </form>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border">
-                    <h4 class="font-bold border-b pb-2 mb-4 text-sm uppercase">Danh sách đơn thư</h4>
-                    <div id="formLogs" class="space-y-3 max-h-80 overflow-y-auto"></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="content-admin" class="tab-content hidden space-y-6">
-            <div class="bg-blue-900 text-white p-4 rounded-xl flex justify-between items-center">
-                <div>
-                    <h3 class="font-bold text-lg">🛠️ PANEL QUẢN LÝ CỦA CÁN BỘ PHƯỜNG</h3>
-                    <p class="text-xs text-blue-200">Chế độ ghi nhận và phê duyệt dữ liệu gốc hệ thống.</p>
-                </div>
-                <button onclick="logoutAdmin()" class="bg-red-600 px-3 py-1 rounded text-xs font-bold">Đăng xuất</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm border md:col-span-1 space-y-4">
-                    <h4 class="font-bold text-gray-900 border-b pb-2 uppercase text-sm">Cập nhật tệp cư dân</h4>
-                    <form onsubmit="adminSaveCitizen(event)" class="space-y-3 text-sm">
-                        <input type="text" id="admName" required placeholder="Tên nhân vật (Họ_Tên)" class="w-full px-3 py-2 border rounded-md">
-                        <input type="text" id="admCCCD" required placeholder="Mã số định danh CCCD" class="w-full px-3 py-2 border rounded-md">
-                        <input type="text" id="admChucvu" required placeholder="Chức vụ/Công việc" class="w-full px-3 py-2 border rounded-md">
-                        <input type="text" id="admTienan" required placeholder="Tiền án (Ghi 'Không có' nếu sạch)" class="w-full px-3 py-2 border rounded-md">
-                        <select id="admTrangthai" class="w-full px-3 py-2 border rounded-md">
-                            <option value="Hợp pháp">Hợp pháp</option>
-                            <option value="Đang bị truy nã">Đang bị truy nã</option>
-                            <option value="Đang bị giám sát">Đang bị giám sát</option>
-                        </select>
-                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-md">CẬP NHẬT LÊN WEB</button>
+                        <button type="submit" class="w-full bg-purple-700 text-white font-bold py-2 rounded uppercase tracking-wide">KÍCH HOẠT TÀI KHOẢN</button>
                     </form>
                 </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-sm border md:col-span-2">
-                    <h4 class="font-bold text-gray-900 border-b pb-2 mb-4 uppercase text-sm">Xét duyệt hồ sơ trực tuyến</h4>
-                    <div id="admHosoList" class="space-y-4 max-h-[400px] overflow-y-auto"></div>
+                <div class="bg-white p-5 rounded-xl border border-purple-200 shadow-sm lg:col-span-2 flex flex-col">
+                    <h4 class="font-bold text-purple-800 text-sm border-b pb-2 mb-3 uppercase"><i class="fa-solid fa-eye"></i> Nhật Ký Hệ Thống: Giám Sát Hành Vi & Tiến Độ Làm Việc Của Cán Bộ</h4>
+                    <div id="suLogsContainer" class="space-y-2 max-h-[400px] overflow-y-auto flex-1 pr-1 font-mono text-[11px]">
+                        </div>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <div id="loginModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl max-w-sm w-full border shadow-2xl">
-            <h3 class="text-md font-bold text-gray-900 mb-2 text-center uppercase">Mật mã xác minh tư cách Cán bộ</h3>
-            <input type="password" id="adminPasswordInput" placeholder="Nhập mật mã an toàn..." class="w-full px-3 py-2 border rounded-lg text-center font-mono mb-4">
+    <footer class="bg-slate-900 text-slate-500 text-center text-[11px] py-4 mt-12 border-t border-slate-800">
+        <p class="font-bold text-slate-400">HỆ THỐNG TRUNG TÂM CƠ SỞ DỮ LIỆU SỐ HÓA ROLEPLAY QUỐC GIA</p>
+        <p class="mt-0.5">Vận hành nội bộ - Ghi nhận minh bạch hành vi cán bộ hành chính</p>
+    </footer>
+
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl max-w-sm w-full border shadow-2xl space-y-4 text-xs">
+            <h3 class="text-sm font-bold text-center text-slate-900 uppercase tracking-wide">Cửa Sổ Xác Minh Danh Tính Cán Bộ</h3>
+            <div class="space-y-2">
+                <input type="text" id="loginUsername" placeholder="Nhập tên tài khoản..." class="w-full px-3 py-2 border rounded text-center font-bold">
+                <input type="password" id="loginPassword" placeholder="Nhập mật mã an toàn..." class="w-full px-3 py-2 border rounded text-center font-mono">
+            </div>
             <div class="flex gap-2">
-                <button onclick="closeAdminModal()" class="w-1/2 bg-gray-200 text-gray-700 py-2 rounded-lg text-sm">Hủy</button>
-                <button onclick="loginAdmin()" class="w-1/2 bg-red-600 text-white py-2 rounded-lg font-bold text-sm">ĐĂNG NHẬP</button>
+                <button onclick="closeLoginModal()" class="w-1/2 bg-slate-200 py-2 rounded font-bold">HỦY BỎ</button>
+                <button onclick="executeLogin()" class="w-1/2 bg-red-600 text-white py-2 rounded font-bold">ĐĂNG NHẬP</button>
             </div>
         </div>
     </div>
 
     <script>
-        let currentAdminPassword = "";
+        let loggedInUser = null;
+        let globalHosoList = [];
+        let lawChartInstance = null;
+        let docsChartInstance = null;
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('content-' + tabName).classList.remove('hidden');
-            document.querySelectorAll('nav button').forEach(btn => btn.className = "px-6 py-4 text-gray-500");
-            
-            const activeBtn = document.getElementById('tab-' + tabName);
-            if(activeBtn) activeBtn.className = "px-6 py-4 font-bold text-red-700 border-b-2 border-red-600";
+            document.querySelectorAll('nav button').forEach(btn => btn.className = "px-5 py-4 text-slate-500");
+            const actBtn = document.getElementById('tab-' + tabName);
+            if(actBtn) actBtn.className = "px-5 py-4 text-red-700 border-b-2 border-red-600";
         }
 
-        function openAdminModal() { document.getElementById('loginModal').classList.remove('hidden'); }
-        function closeAdminModal() { document.getElementById('loginModal').classList.add('hidden'); }
+        function openLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('loginModal').classList.add('hidden'); }
 
-        async function loginAdmin() {
-            const pass = document.getElementById('adminPasswordInput').value;
-            const res = await fetch('/api/admin/login', {
+        async function executeLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({password: pass})
+                body: JSON.stringify({username, password})
             });
-            const data = await res.json();
-            if(data.success) {
-                currentAdminPassword = pass;
-                closeAdminModal();
+
+            if(res.ok) {
+                const data = await res.json();
+                loggedInUser = data.user;
+                closeLoginModal();
+                
+                document.getElementById('tab-login').innerHTML = `<i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất (${loggedInUser.name})`;
+                document.getElementById('tab-login').setAttribute('onclick', 'logout()');
+                
+                document.getElementById('tab-admin').classList.remove('hidden');
+                if(loggedInUser.role === 'superadmin') {
+                    document.getElementById('tab-superadmin').classList.remove('hidden');
+                }
                 switchTab('admin');
-                document.getElementById('tab-admin').innerHTML = "⚙️ Bảng Cán Bộ";
-                loadAdminHoso();
-            } else {
-                alert("Sai mật mã cán bộ!");
-            }
+                loadStatsAndCharts();
+                loadAdminPanel();
+                if(loggedInUser.role === 'superadmin') loadSuperAdminPanel();
+            } else { alert("Sai thông tin đăng nhập!"); }
         }
 
-        function logoutAdmin() {
-            currentAdminPassword = "";
-            document.getElementById('tab-admin').innerHTML = "<i class='fa-solid fa-user-shield'></i> Cán Bộ Đăng Nhập";
+        function logout() {
+            loggedInUser = null;
+            document.getElementById('tab-login').innerHTML = `<i class="fa-solid fa-lock"></i> Đăng Nhập Hệ Thống`;
+            document.getElementById('tab-login').setAttribute('onclick', 'openLoginModal()');
+            document.getElementById('tab-admin').classList.add('hidden');
+            document.getElementById('tab-superadmin').classList.add('hidden');
             switchTab('trangchu');
+        }
+
+        async function loadNews() {
+            const res = await fetch('/api/news');
+            const data = await res.json();
+            const container = document.getElementById('newsContainer');
+            if(data.length === 0) { container.innerHTML = "<p class='text-xs italic text-slate-400'>Không có văn kiện phát hành hôm nay.</p>"; return; }
+            container.innerHTML = data.map(n => `
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs">
+                    <span class="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-0.5 rounded font-mono">${n.tag}</span>
+                    <h4 class="font-bold text-slate-900 mt-1.5 text-sm">${n.title}</h4>
+                    <p class="text-xs text-slate-600 mt-2 font-mono whitespace-pre-wrap">${n.content}</p>
+                    <p class="text-[10px] text-slate-400 text-right mt-2"><i class="fa-regular fa-clock"></i> Ký ban hành: ${n.time}</p>
+                </div>
+            `).join('');
         }
 
         async function searchCitizen() {
             const name = document.getElementById('searchName').value.trim();
-            const resBox = document.getElementById('searchResult');
-            resBox.classList.remove('hidden');
-            if(!name) return resBox.innerHTML = "<p class='text-red-500 text-center text-sm'>⚠️ Hãy điền tên cần tìm!</p>";
+            const box = document.getElementById('searchResult');
+            box.classList.remove('hidden');
+            if(!name) return box.innerHTML = "<p class='text-red-500 font-bold text-center'>⚠️ Hãy nhập tên!</p>";
 
             const res = await fetch(`/api/citizens?search=${name}`);
             const data = await res.json();
-            
             if(data[name]) {
                 const c = data[name];
-                let colorBg = c.trangthai === "Hợp pháp" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800";
-                resBox.innerHTML = `
-                    <div class='border-l-4 border-red-600 pl-4 space-y-1 text-sm'>
-                        <h4 class='font-bold text-gray-900 uppercase'>HỒ SƠ ĐỊNH DANH GỐC: ${name}</h4>
-                        <p><strong>Mã số CCCD:</strong> <span class='text-red-600 font-mono font-bold'>${c.cccd}</span></p>
-                        <p><strong>Vị trí/Chức vụ:</strong> ${c.chucvu}</p>
-                        <p><strong>Tiền án tiền sự:</strong> <span class='text-orange-600'>${c.tienan}</span></p>
-                        <p><strong>Trạng thái công dân:</strong> <span class='${colorBg} px-2 py-0.5 rounded font-bold text-xs'>${c.trangthai}</span></p>
+                box.innerHTML = `
+                    <div class="space-y-2 text-xs">
+                        <h4 class="font-bold text-sm text-slate-900 border-b pb-1">📄 HỒ SƠ ĐỊNH DANH GỐC: ${name}</h4>
+                        <p><strong>Mã số định danh CCCD:</strong> <span class="font-mono text-red-600 font-bold">${c.cccd}</span></p>
+                        <p><strong>Vị trí/Chức vụ nhân vật:</strong> ${c.chucvu}</p>
+                        <p><strong>Trạng thái pháp lý:</strong> <span class="bg-slate-200 px-1.5 py-0.5 rounded font-bold ${c.trangthai==='Hợp pháp'?'text-green-700':'text-red-700'}">${c.trangthai}</span></p>
+                        <div class="p-2.5 bg-blue-50/50 border rounded-sm mt-2">
+                            <p class="text-blue-800 font-bold uppercase text-[10px] mb-1"><i class="fa-solid fa-shield-halved"></i> Hồ sơ bên Bộ Công An:</p>
+                            <p class="text-slate-700">${c.police_record}</p>
+                        </div>
+                        <div class="p-2.5 bg-red-50/50 border rounded-sm">
+                            <p class="text-red-800 font-bold uppercase text-[10px] mb-1"><i class="fa-solid fa-person-military-to-person"></i> Ban Chỉ Huy Quân Sự:</p>
+                            <p class="text-slate-700">${c.military_status}</p>
+                        </div>
+                        <div class="p-2.5 bg-amber-50/50 border rounded-sm">
+                            <p class="text-amber-800 font-bold uppercase text-[10px] mb-1"><i class="fa-solid fa-building-columns"></i> Dữ liệu Ngân Hàng Trung Ương:</p>
+                            <p><strong>Số tài khoản:</strong> <span class="font-mono font-bold">${c.bank_account}</span></p>
+                            <p><strong>Số dư khả dụng trong ví:</strong> <span class="text-emerald-700 font-bold">${c.bank_balance.toLocaleString('en-US')}$</span></p>
+                        </div>
                     </div>`;
-            } else {
-                resBox.innerHTML = "<p class='text-center text-gray-500 text-sm'>❌ Không tìm thấy công dân này trên cơ sở dữ liệu gốc.</p>";
-            }
+            } else { box.innerHTML = "<p class='text-slate-400 text-center'>❌ Nhân vật này chưa được làm căn cước công dân hoặc chưa đăng ký trên dữ liệu gốc.</p>"; }
         }
 
         async function submitForm(event) {
             event.preventDefault();
-            const name = document.getElementById('formName').value;
+            const name = document.getElementById('formName').value.trim();
             const type = document.getElementById('formType').value;
-            const content = document.getElementById('formContent').value;
+            const content = document.getElementById('formContent').value.trim();
 
-            await fetch('/api/hoso', {
+            const res = await fetch('/api/hoso', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({name, type, content})
             });
-            alert("✅ Đã gửi hồ sơ lên Ủy Ban thành công!");
+            const out = await res.json();
+            alert(`✅ Đã nộp đơn thành công!\n👉 MÃ SỐ ĐƠN THƯ: ${out.data.id}\nHãy nhớ lưu lại mã này để chat nhận kết quả từ Cán bộ ngành.`);
             document.querySelector('#content-dichvu form').reset();
-            loadHoso();
+            loadHosoList();
         }
 
-        async function loadHoso() {
+        async function loadHosoList() {
             const res = await fetch('/api/hoso');
-            const data = await res.json();
-            const box = document.getElementById('formLogs');
-            box.innerHTML = data.map(h => {
-                let statusColor = h.status === "Đã Phê Duyệt" ? "text-green-600" : (h.status === "Đã Từ Chối" ? "text-red-600" : "text-yellow-600");
-                return `
-                <div class="bg-gray-50 p-2.5 rounded border text-xs space-y-0.5">
-                    <p class="font-bold font-mono text-gray-700">${h.id} [<span class="${statusColor}">${h.status}</span>]</p>
-                    <p><strong>Công dân:</strong> ${h.name}</p>
-                    <p class="text-gray-500 italic truncate">"${h.content}"</p>
+            globalHosoList = await res.json();
+        }
+
+        function trackHoso() {
+            const id = document.getElementById('trackIdInput').value.trim();
+            const doc = globalHosoList.find(h => h.id === id);
+            const info = document.getElementById('chatHosoInfo');
+            info.classList.remove('hidden');
+            document.getElementById('chatInputArea').classList.remove('hidden');
+
+            if(!doc) {
+                info.innerHTML = "<span class='text-red-500 font-bold'>❌ Không tìm thấy mã đơn thư này trên cổng dữ liệu!</span>";
+                document.getElementById('chatMessages').innerHTML = "";
+                return;
+            }
+
+            info.innerHTML = `<strong>Đơn mã:</strong> ${doc.id} | <strong>Thủ tục:</strong> ${doc.type}<br><strong>Tình trạng phê duyệt:</strong> <span class="text-blue-600 font-bold">${doc.status}</span>`;
+            renderMessages(doc.feedbacks);
+        }
+
+        function renderMessages(fb) {
+            const box = document.getElementById('chatMessages');
+            if(fb.length === 0) { box.innerHTML = "<p class='text-center text-slate-400 italic py-4'>Cán bộ phụ trách chưa để lại lời nhắn nào.</p>"; return; }
+            box.innerHTML = fb.map(f => `
+                <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                    <div class="flex justify-between font-bold text-slate-700 text-[10px]"><span>${f.sender}</span><span class="text-slate-400 font-normal">${f.time}</span></div>
+                    <p class="text-slate-600 mt-0.5">${f.text}</p>
                 </div>
-            `}).join('');
+            `).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        async function sendFeedback(isAdmin = false, idOver = null) {
+            const id = isAdmin ? idOver : document.getElementById('trackIdInput').value.trim();
+            const text = isAdmin ? document.getElementById(`admReplyInput-${id}`).value.trim() : document.getElementById('chatTextInput').value.trim();
+            const sender = isAdmin ? "" : document.getElementById('chatSenderInput').value.trim() || "Người nộp đơn";
+
+            if(!text) return alert("Vui lòng gõ nội dung phản hồi!");
+
+            await fetch('/api/hoso/feedback', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ id, username: isAdmin ? loggedInUser.username : null, sender, text })
+            });
+
+            if(isAdmin) {
+                document.getElementById(`admReplyInput-${id}`).value = "";
+                loadAdminPanel();
+            } else {
+                document.getElementById('chatTextInput').value = "";
+                await loadHosoList();
+                trackHoso();
+            }
+        }
+
+        async function loadStatsAndCharts() {
+            const res = await fetch('/api/admin/stats');
+            const s = await res.json();
+
+            document.getElementById('statCitizens').innerText = s.totalCitizens;
+            document.getElementById('statCash').innerText = s.totalCash.toLocaleString('en-US') + "$";
+
+            // Vẽ hoặc cập nhật biểu đồ 1: Tình trạng an ninh Công An
+            if(lawChartInstance) lawChartInstance.destroy();
+            lawChartInstance = new Chart(document.getElementById('lawChart'), {
+                type: 'pie',
+                data: { labels: ['Hợp pháp', 'Đang Truy Nã'], datasets: [{ data: s.chartData.lawStatus, backgroundColor: ['#16a34a', '#dc2626'] }] },
+                options: { plugins: { legend: { display: false } } }
+            });
+
+            // Vẽ hoặc cập nhật biểu đồ 2: Tiến độ giải quyết đơn thư UBND
+            if(docsChartInstance) docsChartInstance.destroy();
+            docsChartInstance = new Chart(document.getElementById('docsChart'), {
+                type: 'bar',
+                data: { labels: ['Chờ duyệt', 'Đã duyệt'], datasets: [{ label: 'Số lượng đơn', data: s.chartData.docsStatus, backgroundColor: ['#eab308', '#2563eb'] }] },
+                options: { plugins: { legend: { display: false } } }
+            });
+        }
+
+        async function adminPostNews(event) {
+            event.preventDefault();
+            await fetch('/api/admin/news', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username: loggedInUser.username, tag: document.getElementById('admNewsTag').value, title: document.getElementById('admNewsTitle').value.trim(), content: document.getElementById('admNewsContent').value.trim() })
+            });
+            alert("✅ Đã phát hành văn bản hành chính thành công!");
+            document.querySelector('#content-admin form').reset();
+            loadNews();
+            loadStatsAndCharts();
         }
 
         async function adminSaveCitizen(event) {
             event.preventDefault();
-            const name = document.getElementById('admName').value.trim();
-            const cccd = document.getElementById('admCCCD').value;
-            const chucvu = document.getElementById('admChucvu').value;
-            const tienan = document.getElementById('admTienan').value;
-            const trangthai = document.getElementById('admTrangthai').value;
-
-            const res = await fetch('/api/admin/citizens', {
+            await fetch('/api/admin/citizens', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({password: currentAdminPassword, name, cccd, chucvu, tienan, trangthai})
+                body: JSON.stringify({
+                    username: loggedInUser.username, name: document.getElementById('admName').value.trim(), cccd: document.getElementById('admCCCD').value.trim(), chucvu: document.getElementById('admChucvu').value.trim(), trangthai: document.getElementById('admTrangthai').value,
+                    police_record: document.getElementById('admPolice').value.trim(), military_status: document.getElementById('admMilitary').value.trim(), bank_account: document.getElementById('admBankAcc').value.trim(), bank_balance: document.getElementById('admBankBal').value
+                })
             });
-            const data = await res.json();
-            if(data.success) {
-                alert("✅ Đã cập nhật thông tin công dân vào máy chủ thành công!");
-                document.querySelector('#content-admin form').reset();
-            }
+            alert("✅ Đồng bộ hóa hồ sơ gốc cư dân thành công!");
+            document.querySelector('#content-admin form:nth-of-type(2)').reset();
+            loadStatsAndCharts();
         }
 
-        async function loadAdminHoso() {
+        async function loadAdminPanel() {
             const res = await fetch('/api/hoso');
-            const data = await res.json();
+            globalHosoList = await res.json();
             const box = document.getElementById('admHosoList');
-            if(data.length === 0) { box.innerHTML = "<p class='text-center text-gray-400 text-sm'>Hiện tại chưa có đơn thư nào.</p>"; return;}
-            box.innerHTML = data.map(h => `
-                <div class="bg-gray-50 p-4 rounded-lg border text-xs space-y-2">
+            if(globalHosoList.length === 0) { box.innerHTML = "<p class='text-slate-400 text-center italic py-6'>Hiện chưa tiếp nhận đơn thư mới.</p>"; return; }
+
+            box.innerHTML = globalHosoList.map(h => `
+                <div class="bg-slate-50 p-3 rounded-lg border text-[11px] space-y-1.5 shadow-2xs">
                     <div class="flex justify-between font-bold">
-                        <span class="text-red-600">${h.id} (${h.type}) - [${h.status}]</span>
-                        <span class="text-gray-400">${h.time}</span>
+                        <span class="text-red-700">${h.id} [${h.status}]</span><span class="text-slate-400 font-normal">${h.time}</span>
                     </div>
-                    <p><strong>Công dân nộp đơn:</strong> ${h.name}</p>
-                    <p class="bg-white p-2 rounded border text-gray-600">"${h.content}"</p>
-                    <div class="flex gap-2 justify-end">
-                        <button onclick="duyetHoso('${h.id}', 'Đã Từ Chối')" class="bg-red-500 text-white px-3 py-1 rounded font-bold hover:bg-red-600">Từ Chối Đơn</button>
-                        <button onclick="duyetHoso('${h.id}', 'Đã Phê Duyệt')" class="bg-green-600 text-white px-3 py-1 rounded font-bold hover:bg-green-700">Phê Duyệt ✅</button>
+                    <p><strong>Người nộp:</strong> ${h.name} <br><strong>Loại thủ tục:</strong> ${h.type}</p>
+                    <p class="bg-white p-1.5 rounded border text-slate-600">"${h.content}"</p>
+                    <div class="bg-blue-50/50 p-1.5 border rounded-sm space-y-0.5">
+                        <p class="font-bold text-[10px] text-blue-800 uppercase">Đối thoại trực tiếp:</p>
+                        ${h.feedbacks.map(f => `<p class="text-[10px]"><strong>${f.sender}:</strong> ${f.text}</p>`).join('')}
+                    </div>
+                    <div class="flex gap-1">
+                        <input type="text" id="admReplyInput-${h.id}" placeholder="Chỉ thị của cán bộ..." class="w-full px-2 py-1 border rounded text-[11px]">
+                        <button onclick="sendFeedback(true, '${h.id}')" class="bg-blue-600 text-white font-bold px-2 rounded">Gửi</button>
+                    </div>
+                    <div class="flex gap-1 justify-end pt-1">
+                        <button onclick="duyetHoso('${h.id}', 'Đã Từ Chối')" class="bg-red-500 text-white px-2 py-0.5 rounded font-bold">Bác Đơn</button>
+                        <button onclick="duyetHoso('${h.id}', 'Đã Phê Duyệt')" class="bg-green-600 text-white px-2 py-0.5 rounded font-bold">Duyệt ✅</button>
                     </div>
                 </div>
             `).join('');
@@ -258,14 +449,55 @@
             await fetch('/api/admin/hoso/approve', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({password: currentAdminPassword, id, status})
+                body: JSON.stringify({username: loggedInUser.username, id, status})
             });
-            alert("Đã cập nhật trạng thái đơn!");
-            loadAdminHoso();
-            loadHoso();
+            alert("Đã cập nhật trạng thái thẩm định!");
+            loadAdminPanel();
+            loadStatsAndCharts();
         }
 
-        loadHoso();
+        // ==================== LOGIC ĐỘC QUYỀN CỦA SUPER ADMIN ====================
+        async function loadSuperAdminPanel() {
+            const res = await fetch(`/api/superadmin/monitoring?adminUser=${loggedInUser.username}`);
+            const data = await res.json();
+
+            // Đổ danh sách nhật ký logs giám sát cán bộ làm việc
+            const logBox = document.getElementById('suLogsContainer');
+            if(data.logs.length === 0) { logBox.innerHTML = "<p class='text-slate-400 italic text-center py-4'>Hệ thống chưa ghi nhận hành động nào.</p>"; }
+            else {
+                logBox.innerHTML = data.logs.map(l => `
+                    <div class="border-b pb-1 border-purple-100">
+                        <span class="text-purple-700 font-bold">[${l.time}]</span> 
+                        <span class="bg-amber-100 text-amber-800 px-1 rounded font-bold">Cán bộ: @${l.username}</span> 
+                        <span class="text-slate-600">-> ${l.action}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function superAdminCreateUser(event) {
+            event.preventDefault();
+            const username = document.getElementById('suNewUser').value.trim();
+            const password = document.getElementById('suNewPass').value.trim();
+            const name = document.getElementById('suNewName').value.trim();
+            const department = document.getElementById('suNewDept').value;
+
+            const res = await fetch('/api/superadmin/users', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ adminUser: loggedInUser.username, username, password, name, department })
+            });
+            const out = await res.json();
+            if(out.success) {
+                alert(`✅ Kích hoạt thành công tài khoản cán bộ cho: ${name}`);
+                document.querySelector('#content-superadmin form').reset();
+                loadSuperAdminPanel();
+            } else { alert(out.message); }
+        }
+
+        // Chạy khởi tạo ban đầu khi vào web
+        loadNews();
+        loadHosoList();
     </script>
 </body>
 </html>
