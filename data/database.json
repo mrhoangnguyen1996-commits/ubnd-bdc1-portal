@@ -12,7 +12,7 @@
       "password": "ca123",
       "role": "lanhdao",
       "name": "Trần Minh Quang",
-      "department": "Bộ Công An Cấp Phường"
+      "department": "Bộ Công An"
     }
   ],
   "system_config": {
@@ -38,15 +38,33 @@
       "bank_balance": 150000000
     }
   },
-  "hoso": [],
+  "hoso": [
+    {
+      "id": "HS-9999",
+      "name": "Nguyen_Manh_Hoang",
+      "type": "CÔNG AN - Khai báo tạm trú & Sở hữu vũ khí hợp pháp",
+      "content": "Yêu cầu cấp phép sử dụng công cụ hỗ trợ cho lực lượng giám sát quản lý.",
+      "status": "Chờ duyệt",
+      "time": "13/06/2026, 22:15:00",
+      "feedbacks": []
+    }
+  ],
   "news": [
     {
-      "id": "NEWS-INIT",
+      "id": "NEWS-1001",
       "tag": "QUYẾT ĐỊNH",
-      "title": "Kích hoạt hệ thống quản trị liên thông thế hệ mới",
-      "content": "Toàn bộ hệ thống quản lý quốc gia đã được nâng cấp lên phiên bản số hóa toàn diện. Yêu cầu cán bộ các ban ngành nghiêm túc thực hiện nhiệm vụ.",
-      "time": "13/06/2026, 21:00:00",
+      "title": "Chính thức vận hành Cổng thông tin điện tử BDC",
+      "content": "Ban hành quy chế phối hợp liên ngành điện tử giữa Bộ Công An, Ban Chỉ Huy Quân Sự và Tòa Án Tối Cao trên nền tảng số hóa BDC quốc gia.",
+      "time": "13/06/2026, 22:00:00",
       "important": true
+    },
+    {
+      "id": "NEWS-1002",
+      "tag": "THÔNG BÁO",
+      "title": "Tăng cường công tác kiểm tra hành chính ban đêm",
+      "content": "Yêu cầu lực lượng tuần tra kiểm soát nghiêm ngặt các tuyến đường trục chính, xử lý nghiêm hành vi gây rối trật tự công cộng.",
+      "time": "13/06/2026, 22:10:00",
+      "important": false
     }
   ],
   "logs": []
